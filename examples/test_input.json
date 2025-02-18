@@ -1,0 +1,112 @@
+{
+  "input": {
+    "4": {
+      "inputs": {
+        "clip_name1": "clip_l.safetensors",
+        "clip_name2": "t5xxl_fp16.safetensors",
+        "type": "flux"
+      },
+      "class_type": "DualCLIPLoader",
+      "_meta": {
+        "title": "DualCLIPLoader"
+      }
+    },
+    "6": {
+      "inputs": {
+        "width": 768,
+        "height": 1280,
+        "batch_size": 1
+      },
+      "class_type": "EmptyLatentImage",
+      "_meta": {
+        "title": "Empty Latent Image"
+      }
+    },
+    "7": {
+      "inputs": {
+        "samples": ["49", 0],
+        "vae": ["8", 0]
+      },
+      "class_type": "VAEDecode",
+      "_meta": {
+        "title": "VAE Decode"
+      }
+    },
+    "8": {
+      "inputs": {
+        "vae_name": "ae.safetensors"
+      },
+      "class_type": "VAELoader",
+      "_meta": {
+        "title": "Load VAE"
+      }
+    },
+    "21": {
+      "inputs": {
+        "filename_prefix": "test",
+        "images": ["7", 0]
+      },
+      "class_type": "SaveImage",
+      "_meta": {
+        "title": "Save Image"
+      }
+    },
+    "32": {
+      "inputs": {
+        "unet_name": "flux1-dev.safetensors",
+        "weight_dtype": "default"
+      },
+      "class_type": "UNETLoader",
+      "_meta": {
+        "title": "Load Diffusion Model"
+      }
+    },
+    "49": {
+      "inputs": {
+        "seed": 199643624487434,
+        "steps": 30,
+        "cfg": 1,
+        "sampler_name": "deis",
+        "scheduler": "beta",
+        "denoise": 1,
+        "model": ["32", 0],
+        "positive": ["53", 0],
+        "negative": ["56", 0],
+        "latent_image": ["6", 0]
+      },
+      "class_type": "KSampler",
+      "_meta": {
+        "title": "KSampler"
+      }
+    },
+    "51": {
+      "inputs": {
+        "text": "A fashion model with a confident pose, wearing modern apparel including a stylish jacket, fitted jeans, and sneakers, standing in a minimalist photo studio with a plain white background. Soft, even lighting highlights the outfit details, with a clean, professional atmosphere. The model’s pose is natural and relaxed, hands in pockets, looking directly at the camera, perfect for an apparel photoshoot. High-resolution image focused on the clothing, simple studio setup with no distractions.",
+        "clip": ["4", 0]
+      },
+      "class_type": "CLIPTextEncode",
+      "_meta": {
+        "title": "CLIP Text Encode (Prompt)"
+      }
+    },
+    "53": {
+      "inputs": {
+        "guidance": 3,
+        "conditioning": ["51", 0]
+      },
+      "class_type": "FluxGuidance",
+      "_meta": {
+        "title": "FluxGuidance"
+      }
+    },
+    "56": {
+      "inputs": {
+        "conditioning": ["51", 0]
+      },
+      "class_type": "ConditioningZeroOut",
+      "_meta": {
+        "title": "ConditioningZeroOut"
+      }
+    }
+  }
+}
