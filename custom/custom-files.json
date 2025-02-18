@@ -1,1 +1,10 @@
-[]
+[
+  "https://github.com/storyicon/comfyui_segment_anything.git",
+  "https://github.com/kijai/ComfyUI-KJNodes.git",
+  "https://github.com/Acly/comfyui-inpaint-nodes.git",
+  "https://github.com/WASasquatch/was-node-suite-comfyui.git",
+  "https://github.com/cubiq/ComfyUI_essentials.git",
+  "https://github.com/Fannovel16/comfyui_controlnet_aux.git",
+  "https://github.com/1038lab/ComfyUI-RMBG.git",
+  "https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes.git"
+]
