@@ -6,5 +6,7 @@
   "https://github.com/cubiq/ComfyUI_essentials.git",
   "https://github.com/Fannovel16/comfyui_controlnet_aux.git",
   "https://github.com/1038lab/ComfyUI-RMBG.git",
-  "https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes.git"
+  "https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes.git",
+  "https://github.com/lujiazho/ComfyUI-CatvtonFluxWrapper.git",
+  "https://github.com/john-mnz/ComfyUI-Inspyrenet-Rembg.git"
 ]
