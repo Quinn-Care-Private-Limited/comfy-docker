@@ -11,6 +11,9 @@ services:
       # mount output folder so you can see output files
       - ${DATA_PATH}:/data
       - ${MODELS_PATH}:/comfyui/models
+    ports:
+      - "3000:3000"
     runtime: nvidia
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
+      - PORT=3000
