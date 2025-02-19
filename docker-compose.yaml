@@ -11,6 +11,7 @@ services:
       # mount output folder so you can see output files
       - ${DATA_PATH}:/data
       - ${MODELS_PATH}:/comfyui/models
+    network_mode: "host"
     ports:
       - "3000:3000"
     runtime: nvidia
