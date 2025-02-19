@@ -64,6 +64,8 @@ WORKDIR /
 ### Add the src directory
 ADD src/ ./
 
+RUN mkdir -p /data
+
 ### Install each of the defined requirements then make start.sh file executable
 RUN pip3 install --no-cache-dir -r requirements.txt && chmod +x /start.sh
 

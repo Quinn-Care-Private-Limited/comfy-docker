@@ -1,10 +1,16 @@
 ###
-### File to copy the production compose files configuration.
-### used automatically when building without a specified compose file.
+### Contains regular ubuntu configuration for production
 ###
 version: "3.8"
 services:
   comfyui:
-    extends:
-      file: ./docker.compose.prod.yaml
-      service: comfyui
+    build: ./
+    image: quinninc/comfy:1.0.0
+    container_name: comfyui-worker
+    volumes:
+      # mount output folder so you can see output files
+      - ${DATA_PATH}:/data
+      - ${MODELS_PATH}:/comfyui/models
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all

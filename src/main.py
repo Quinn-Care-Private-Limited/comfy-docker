@@ -17,7 +17,6 @@ async def handle_post(request):
 
         # Send response back immediately
         response_data = {"message": "Job created!", "job_id": job_id}
-        print("Sending response:", response_data)
         response = web.json_response(response_data)
 
         # Schedule the rp_handler to run in the background

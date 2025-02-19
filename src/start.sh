@@ -6,7 +6,7 @@ export LD_PRELOAD="${TCMALLOC}"
 
 
 echo "worker-comfy: Starting ComfyUI"
-python3 /comfyui/main.py --disable-auto-launch --disable-metadata &
+python3 /comfyui/main.py --input-directory /data --output-directory /data --disable-auto-launch --disable-metadata &
 
 echo "worker-comfy: Starting Handler"
 python3 -u /main.py

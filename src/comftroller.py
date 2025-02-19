@@ -24,7 +24,7 @@ import utils
 ##################################################
 
 # HOSTNAME and PORT where ComfyUI is running
-HOSTPORTNAME = "34.44.188.88:8000"
+HOSTPORTNAME = "127.0.0.1:8188"
 
 # Time to wait between API check attempts in milliseconds
 API_AVAILABLE_INTERVAL_MS = 1000
