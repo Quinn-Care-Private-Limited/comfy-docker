@@ -73,5 +73,5 @@ RUN pip3 install --no-cache-dir -r requirements.txt && chmod +x /start.sh
 RUN pip3 cache purge
 
 ### Start the container
-CMD /start.sh
+ENTRYPOINT [ "/start.sh" ] 
 # because 69 :*
