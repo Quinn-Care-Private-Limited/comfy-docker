@@ -2,6 +2,9 @@ from aiohttp import web
 import uuid
 import asyncio
 import rp_handler
+import os
+
+port = int(os.environ.get('PORT', 3000))
 
 async def run_handler(job_id, data):
      await asyncio.to_thread(rp_handler.handler, {
@@ -32,4 +35,4 @@ app = web.Application()
 app.add_routes([web.post('/', handle_post)])  # Route for POST requests
 
 if __name__ == '__main__':
-    web.run_app(app, port=8000)
+    web.run_app(app, port=port)
