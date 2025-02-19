@@ -93,3 +93,11 @@ def base64_encode(img_file):
         encoded_string = base64.b64encode(image_file.read())
         return encoded_string.decode("utf-8")
     
+    
+def safe_parse(data):
+    if isinstance(data, dict):
+        return data
+    try:
+        return json.loads(data)  # Attempt to parse if it's a string
+    except json.JSONDecodeError:
+        return {"error": "Invalid JSON", "raw_data": data}  
