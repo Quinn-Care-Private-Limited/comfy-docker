@@ -49,9 +49,9 @@ def handler(job):
     # set callback for when comftroller processes incomming data
 
     if(env == 'production'):
-        update_progress = lambda data: callback(callback_url, {"job_id": job_id, "status": "processing", "data": data})  
+        update_progress = lambda data: callback(callback_url, {"job_id": job_id, "status": "processing", "data": json.loads(data)})  
     else:
-        update_progress = lambda data: utils.log({"job_id": job_id, "status": "processing", "data": data})
+        update_progress = lambda data: utils.log({"job_id": job_id, "status": "processing", "data": json.loads(data)})
 
     input_files = job_input.get("files", [])
 
