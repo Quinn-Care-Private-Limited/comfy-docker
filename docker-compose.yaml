@@ -1,7 +1,6 @@
 ###
 ### Contains regular ubuntu configuration for production
 ###
-version: "3.8"
 services:
   comfyui:
     build: ./
@@ -12,8 +11,6 @@ services:
       - ${DATA_PATH}:/data
       - ${MODELS_PATH}:/comfyui/models
     network_mode: "host"
-    ports:
-      - "3000:3000"
     runtime: nvidia
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
