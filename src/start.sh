@@ -2,31 +2,30 @@
 set -eo pipefail
 
 # mount file store if fs ip is set
-echo "Mounting Cloud Filestore."
 # if Cloud storage type is S3
-if [ "$CLOUD_STORAGE_TYPE" = "S3" ]; then
-  if [ -n "$DATA_FS_SHARE" ]; then
-    mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport $DATA_FS_SHARE $DATA_PATH
-  fi
-  if [ -n "$MODELS_FS_SHARE" ]; then
-    mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport $MODELS_FS_SHARE $MODELS_PATH
-  fi
-  if [ -n "$EXTRA_LORAS_FS_SHARE" ]; then
-    mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport $EXTRA_LORAS_FS_SHARE $EXTRA_LORAS_PATH
-  fi
-fi
+if [ -n "$FS_SHARE" ]; then
+  echo "Mounting Cloud Filestore."
 
-# if Cloud storage type is GCS
-if [ "$CLOUD_STORAGE_TYPE" = "GCS" ]; then
-  if [ -n "$DATA_FS_SHARE" ]; then
-    mount -o nolock $DATA_FS_SHARE $DATA_PATH
+  if [ "$CLOUD_STORAGE_TYPE" = "S3" ]; then
+      mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport $FS_SHARE$DATA_PATH $DATA_PATH
+      mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport $FS_SHARE$MODELS_PATH $MODELS_PATH
+
+    if [ -n "$LORAS_PATH" ]; then
+      mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport $FS_SHARE$LORAS_PATH $EXTRA_LORAS_PATH
+    fi
   fi
-  if [ -n "$MODELS_FS_SHARE" ]; then
-    mount -o nolock $MODELS_FS_SHARE $DATA_PATH
+
+
+  # if Cloud storage type is GCS
+  if [ "$CLOUD_STORAGE_TYPE" = "GCS" ]; then
+      mount -o nolock $FS_SHARE$DATA_PATH $DATA_PATH
+      mount -o nolock $FS_SHARE$MODELS_PATH $MODELS_PATH
+
+    if [ -n "$LORAS_PATH" ]; then
+      mount -o nolock $$FS_SHARE$LORAS_PATH $EXTRA_LORAS_PATH
+    fi
   fi
-  if [ -n "$EXTRA_LORAS_FS_SHARE" ]; then
-    mount -o nolock $EXTRA_LORAS_FS_SHARE $DATA_PATH
-  fi
+  echo "Mounting completed."
 fi
 
 # Use libtcmalloc for better memory management
