@@ -4,14 +4,10 @@
 services:
   comfyui:
     build: ./
-    image: quinninc/comfy:1.0.0
+    image: quinninc/comfy:1.1.0
     container_name: comfyui-worker
-    volumes:
-      # mount output folder so you can see output files
-      - ${DATA_PATH}:/data
-      - ${MODELS_PATH}:/comfyui/models
     network_mode: "host"
     runtime: nvidia
+    env_file: .env
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
-      - PORT=3000

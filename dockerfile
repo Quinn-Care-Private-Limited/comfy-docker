@@ -1,6 +1,8 @@
 ### Use Nvidia CUDA base image
 FROM nvidia/cuda:12.6.2-cudnn-runtime-ubuntu22.04 AS base
 
+USER root
+
 ### Prevents prompts from packages asking for user input during installation
 ENV DEBIAN_FRONTEND=noninteractive \
     ### Prefer binary wheels over source distributions for faster pip installations
@@ -8,17 +10,23 @@ ENV DEBIAN_FRONTEND=noninteractive \
     ### Ensures output from python is printed immediately to the terminal without buffering
     PYTHONUNBUFFERED=1 
 
+ENV PORT=80
+ENV DATA_PATH=/comfyui/data
+ENV MODELS_PATH=/comfyui/models
+ENV EXTRA_LORAS_PATH=/comfyui/extra_models/loras
+
 ### Install Python, git and other necessary tools
 RUN apt-get update && apt-get install -y \
     python3-pip \
     python3.10 \
     wget \
     git \
-    ### Install libs used for exporting mp4, for nodes like animatediff. can be removed if not required.
     ffmpeg \
     libpng-dev \
     libjpeg-dev \
-    libgl1-mesa-glx 
+    libgl1-mesa-glx \
+    tini \
+    nfs-common
 
 ### Clean up to reduce image size
 RUN apt-get autoremove -y \
@@ -37,7 +45,6 @@ WORKDIR /comfyui
 ### Add /custom folder - this includes the installer script and any manually added custom nodes/models
 ADD custom/custom-files.json ./
 ADD custom/custom-file-installer.py ./
-# ADD volume/extra_model_paths.yaml ./
 
 RUN pip3 install --upgrade pip
 
@@ -57,14 +64,14 @@ RUN for dir in /comfyui/custom_nodes/*/; do \
     done
 
 RUN pip3 install huggingface-hub onnxruntime diffusers
+RUN mkdir -p /comfyui/data
+RUN mkdir -p /comfyui/extra_models/loras
 
 ### Go back to the root
-WORKDIR /
+WORKDIR /app
 
 ### Add the src directory
-ADD src/ ./
-
-RUN mkdir -p /data
+ADD src/requirements.txt ./
 
 ### Install each of the defined requirements then make start.sh file executable
 RUN pip3 install --no-cache-dir -r requirements.txt && chmod +x /start.sh
@@ -72,6 +79,8 @@ RUN pip3 install --no-cache-dir -r requirements.txt && chmod +x /start.sh
 # Clean up after pip installs
 RUN pip3 cache purge
 
-### Start the container
-CMD [ "/start.sh" ] 
-# because 69 :*
+ADD custom/extra_model_paths.yaml /comfyui/
+ADD src/ ./
+
+ENTRYPOINT ["/usr/bin/tini", "--"]
+CMD ["/app/start.sh"]
