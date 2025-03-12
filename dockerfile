@@ -13,7 +13,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 ENV PORT=80
 ENV DATA_PATH=/comfyui/data
 ENV MODELS_PATH=/comfyui/models
-ENV EXTRA_LORAS_PATH=/comfyui/extra_models/loras
+ENV EXTRA_MODELS_PATH=/comfyui/extra_models
 
 ### Install Python, git and other necessary tools
 RUN apt-get update && apt-get install -y \

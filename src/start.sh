@@ -11,7 +11,7 @@ if [ -n "$FS_SHARE" ]; then
       mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport $FS_SHARE$MODELS_PATH $MODELS_PATH
 
     if [ -n "$LORAS_PATH" ]; then
-      mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport $FS_SHARE$LORAS_PATH $EXTRA_LORAS_PATH
+      mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport $FS_SHARE$LORAS_PATH $EXTRA_MODELS_PATH/loras
     fi
   fi
 
@@ -22,7 +22,7 @@ if [ -n "$FS_SHARE" ]; then
       mount -o nolock $FS_SHARE$MODELS_PATH $MODELS_PATH
 
     if [ -n "$LORAS_PATH" ]; then
-      mount -o nolock $$FS_SHARE$LORAS_PATH $EXTRA_LORAS_PATH
+      mount -o nolock $$FS_SHARE$LORAS_PATH $EXTRA_MODELS_PATH/loras
     fi
   fi
   echo "Mounting completed."
