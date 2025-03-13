@@ -1,11 +1,9 @@
-###
-### Contains regular ubuntu configuration for production
-###
 services:
   comfyui:
     build: ./
     image: quinninc/comfy:1.1.0
     container_name: comfyui-worker
+    privileged: true
     network_mode: "host"
     env_file: .env
     environment:
