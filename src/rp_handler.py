@@ -39,11 +39,11 @@ def handler(job):
         dict: A dictionary containing either an error message or a success status with generated images.
     """
     run_id = job["id"]
-    job_input = job["data"]  # input workflow
+    job_input = job["data"]["input"]  # input workflow
 
     # Validate inputs
     if job_input is None:
-        return utils.error(f"no job data")
+        return utils.error(f"no 'input' property found on job data")
 
     # if workflow is a string then validate will try convert to json
     workflow = utils.validate_json(job_input)
