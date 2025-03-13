@@ -14,10 +14,16 @@ env = os.environ.get('ENV', 'production')
 
 utils.log(f"ENV: {env}")
 
+callback_data = {}
+
 def callback(callback_url, data):
+    callback_data[data["run_id"]] = data
     if(callback_url is None):
         return
     requests.post(callback_url, headers={'Content-Type': 'application/json'}, data=json.dumps(data))  
+
+def get_status(run_id):
+    return callback_data[run_id]
 
 def handler(job):
     """
@@ -32,9 +38,9 @@ def handler(job):
     Returns:
         dict: A dictionary containing either an error message or a success status with generated images.
     """
-    job_id = job["id"]
+    run_id = job["id"]
     callback_url = job.get("callback_url")
-    job_input = job["input"]  # input workflow
+    job_input = job["payload"]  # input workflow
 
     # Validate inputs
     if job_input is None:
@@ -49,9 +55,9 @@ def handler(job):
     # set callback for when comftroller processes incomming data
 
     if(env == 'production'):
-        update_progress = lambda data: callback(callback_url, {"job_id": job_id, "status": "processing", "data": utils.safe_parse(data)})  
+        update_progress = lambda data: callback(callback_url, {"run_id": run_id, "status": "processing", "data": utils.safe_parse(data)})  
     else:
-        update_progress = lambda data: utils.log({"job_id": job_id, "status": "processing", "data": utils.safe_parse(data)})
+        update_progress = lambda data: utils.log({"run_id": run_id, "status": "processing", "data": utils.safe_parse(data)})
 
     input_files = job_input.get("files", [])
 
@@ -64,7 +70,7 @@ def handler(job):
 
     # if 'run' had an error, then stop job and return error as result
     if outputs.get('error'):
-        update_progress({"job_id": job_id, "status": "error", "data":  outputs.get('error')})
+        update_progress({"run_id": run_id, "status": "error", "data": outputs.get('error')})
         return
 
     # Fetching generated images
@@ -92,7 +98,7 @@ def handler(job):
         utils.log(output_datas)
         utils.log("")
 
-    update_progress({"job_id": job_id, "status": "success", "output": output_files})
+    update_progress({"run_id": run_id, "status": "success", "data": {"output": output_files}})
 
 
 
