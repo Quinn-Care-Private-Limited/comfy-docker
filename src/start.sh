@@ -20,7 +20,7 @@ if [ -n "$FS_SHARE" ]; then
       mount -o nolock $FS_SHARE$MODELS_PATH $MODELS_PATH
 
     if [ -n "$LORAS_PATH" ]; then
-      mount -o nolock $$FS_SHARE$LORAS_PATH $EXTRA_MODELS_PATH/loras
+      mount -o nolock $FS_SHARE$LORAS_PATH $EXTRA_MODELS_PATH/loras
     fi
   fi
   echo "Mounting completed."
