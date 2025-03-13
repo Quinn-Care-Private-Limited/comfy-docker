@@ -74,7 +74,7 @@ WORKDIR /app
 ADD src/requirements.txt ./
 
 ### Install each of the defined requirements then make start.sh file executable
-RUN pip3 install --no-cache-dir -r requirements.txt && chmod +x /start.sh
+RUN pip3 install --no-cache-dir -r requirements.txt && chmod +x start.sh
 
 # Clean up after pip installs
 RUN pip3 cache purge
