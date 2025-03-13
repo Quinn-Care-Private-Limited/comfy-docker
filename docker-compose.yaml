@@ -4,6 +4,7 @@ services:
     image: quinninc/comfy:1.1.0
     container_name: comfyui-worker
     privileged: true
+    runtime: nvidia
     network_mode: "host"
     env_file: .env
     environment:
