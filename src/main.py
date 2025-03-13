@@ -9,8 +9,7 @@ port = int(os.environ.get('PORT', 3000))
 async def run_handler(run_id, data):
      await asyncio.to_thread(rp_handler.handler, {
         "id": run_id,
-        "callback_url": data.get("callback_url"),
-        "payload": data.get("payload")
+        "data": data
     })
 
 async def handle_post(request):

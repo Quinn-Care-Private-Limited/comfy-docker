@@ -39,12 +39,11 @@ def handler(job):
         dict: A dictionary containing either an error message or a success status with generated images.
     """
     run_id = job["id"]
-    callback_url = job.get("callback_url")
-    job_input = job["payload"]  # input workflow
+    job_input = job["data"]  # input workflow
 
     # Validate inputs
     if job_input is None:
-        return utils.error(f"no 'input' property found on job data")
+        return utils.error(f"no job data")
 
     # if workflow is a string then validate will try convert to json
     workflow = utils.validate_json(job_input)
@@ -55,7 +54,7 @@ def handler(job):
     # set callback for when comftroller processes incomming data
 
     if(env == 'production'):
-        update_progress = lambda data: callback(callback_url, {"run_id": run_id, "status": "processing", "data": utils.safe_parse(data)})  
+        update_progress = lambda data: callback(None, {"run_id": run_id, "status": "processing", "data": utils.safe_parse(data)})  
     else:
         update_progress = lambda data: utils.log({"run_id": run_id, "status": "processing", "data": utils.safe_parse(data)})
 
