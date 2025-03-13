@@ -26,10 +26,6 @@ if [ -n "$FS_SHARE" ]; then
   echo "Mounting completed."
 fi
 
-# Use libtcmalloc for better memory management
-TCMALLOC="$(ldconfig -p | grep -Po "libtcmalloc.so.\d" | head -n 1)"
-export LD_PRELOAD="${TCMALLOC}"
-
 
 echo "worker-comfy: Starting ComfyUI"
 python3 /comfyui/main.py --input-directory /comfyui/data --output-directory /comfyui/data --disable-auto-launch --disable-metadata &
