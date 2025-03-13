@@ -7,7 +7,6 @@ services:
     image: quinninc/comfy:1.1.0
     container_name: comfyui-worker
     network_mode: "host"
-    runtime: nvidia
     env_file: .env
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
