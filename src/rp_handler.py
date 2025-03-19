@@ -69,7 +69,7 @@ def handler(job):
 
     # if 'run' had an error, then stop job and return error as result
     if outputs.get('error'):
-        update_progress({"run_id": run_id, "status": "error", "data": outputs.get('error')})
+        update_progress({"run_id": run_id, "status": "failed", "data": outputs.get('error')})
         return
 
     # Fetching generated images
@@ -97,7 +97,7 @@ def handler(job):
         utils.log(output_datas)
         utils.log("")
 
-    update_progress({"run_id": run_id, "status": "success", "data": {"output": output_files}})
+    update_progress({"run_id": run_id, "status": "completed", "data": {"output": output_files}})
 
 
 
