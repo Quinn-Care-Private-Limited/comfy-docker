@@ -27,6 +27,7 @@ def get_status(run_id):
 
 def process_callback(tracker, data):
     data = utils.safe_parse(data)
+    utils.log(data)
     tracker.update_progress(data)
     return {"progress": tracker.progress, "status": data}
 

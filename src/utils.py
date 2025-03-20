@@ -114,7 +114,7 @@ class ProgressTracker:
     def update_progress(self, status_callback):
         try:
             data = status_callback['data']
-
+    
             if status_callback['type'] == 'executing':
                 node = data['node']
                 self.node_status[node] = 'executing'
