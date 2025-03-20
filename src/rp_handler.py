@@ -25,6 +25,12 @@ def callback(data, callback_url=None):
 def get_status(run_id):
     return callback_data[run_id]
 
+def calculate_progress(tracker, data):
+    data = utils.safe_parse(data)
+    tracker.update_progress(data)
+    progress = tracker.calculate_overall_progress()
+    return {"progress": progress, "status": data}
+
 def handler(job):
     """
     The main function that handles a job of generating an image.
@@ -53,10 +59,11 @@ def handler(job):
 
     # set callback for when comftroller processes incomming data
 
+    tracker = utils.ProgressTracker(workflow)
     if(env == 'production'):
-        update_progress = lambda data: callback({"run_id": run_id, "status": "processing", "data": utils.safe_parse(data)})  
+        update_progress = lambda data: callback({"run_id": run_id, "status": "processing", "data": calculate_progress(tracker, data)})  
     else:
-        update_progress = lambda data: utils.log({"run_id": run_id, "status": "processing", "data": utils.safe_parse(data)})
+        update_progress = lambda data: utils.log({"run_id": run_id, "status": "processing", "data": calculate_progress(tracker, data)})
 
     input_files = job_input.get("files", [])
 
@@ -97,7 +104,7 @@ def handler(job):
         utils.log(output_datas)
         utils.log("")
 
-    callback({"run_id": run_id, "status": "completed", "data": {"output": output_files}})
+    callback({"run_id": run_id, "status": "completed", "data": {"progress": 100, "output": output_files}})
 
 
 

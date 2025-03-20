@@ -101,3 +101,34 @@ def safe_parse(data):
         return json.loads(data)  # Attempt to parse if it's a string
     except json.JSONDecodeError:
         return {"error": "Invalid JSON", "raw_data": data}  
+    
+
+class ProgressTracker:
+    def __init__(self, payload):
+        self.payload = payload
+        self.total_nodes = len(payload)
+        self.node_progress = {node: 0 for node in payload}
+        self.node_status = {node: 'pending' for node in payload}
+
+    def update_progress(self, status_callback):
+        data = status_callback['data']
+        node = data['node']
+
+        if status_callback['type'] == 'executing':
+            self.node_status[node] = 'executing'
+            self.node_progress[node] = 0  # Reset progress for executing node
+
+        elif status_callback['type'] == 'progress':
+            self.node_status[node] = 'executing'
+            self.node_progress[node] = data['value'] / data['max']
+
+        elif status_callback['type'] == 'completed':
+            self.node_status[node] = 'completed'
+            self.node_progress[node] = 1  # Mark node as fully completed
+
+        self.calculate_overall_progress()
+
+    def calculate_overall_progress(self):
+        total_progress = sum(self.node_progress.values())
+        overall_progress = (total_progress / self.total_nodes) * 100
+        return overall_progress
