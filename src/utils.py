@@ -112,19 +112,22 @@ class ProgressTracker:
         self.progress = 0
 
     def update_progress(self, status_callback):
-        data = status_callback['data']
+        try:
+            data = status_callback['data']
 
-        if status_callback['type'] == 'executing':
-            node = data['node']
-            self.node_status[node] = 'executing'
-            self.node_progress[node] = 1  # Reset progress for executing node
+            if status_callback['type'] == 'executing':
+                node = data['node']
+                self.node_status[node] = 'executing'
+                self.node_progress[node] = 1  # Reset progress for executing node
 
-        elif status_callback['type'] == 'progress':
-            node = data['node']
-            self.node_status[node] = 'executing'
-            self.node_progress[node] = data['value'] / data['max']
+            elif status_callback['type'] == 'progress':
+                node = data['node']
+                self.node_status[node] = 'executing'
+                self.node_progress[node] = data['value'] / data['max']
 
-        self.calculate_overall_progress()
+            self.calculate_overall_progress()
+        except Exception as e:
+            log(f"Error updating progress: {e}")
 
     def calculate_overall_progress(self):
         total_progress = sum(self.node_progress.values())
