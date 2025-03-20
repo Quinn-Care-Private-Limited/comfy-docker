@@ -16,7 +16,7 @@ utils.log(f"ENV: {env}")
 
 callback_data = {}
 
-def callback(callback_url, data):
+def callback(data, callback_url=None):
     callback_data[data["run_id"]] = data
     if(callback_url is None):
         return
@@ -54,7 +54,7 @@ def handler(job):
     # set callback for when comftroller processes incomming data
 
     if(env == 'production'):
-        update_progress = lambda data: callback(None, {"run_id": run_id, "status": "processing", "data": utils.safe_parse(data)})  
+        update_progress = lambda data: callback({"run_id": run_id, "status": "processing", "data": utils.safe_parse(data)})  
     else:
         update_progress = lambda data: utils.log({"run_id": run_id, "status": "processing", "data": utils.safe_parse(data)})
 
@@ -69,7 +69,7 @@ def handler(job):
 
     # if 'run' had an error, then stop job and return error as result
     if outputs.get('error'):
-        update_progress({"run_id": run_id, "status": "failed", "data": outputs.get('error')})
+        callback({"run_id": run_id, "status": "failed", "data": outputs.get('error')})
         return
 
     # Fetching generated images
@@ -97,7 +97,7 @@ def handler(job):
         utils.log(output_datas)
         utils.log("")
 
-    update_progress({"run_id": run_id, "status": "completed", "data": {"output": output_files}})
+    callback({"run_id": run_id, "status": "completed", "data": {"output": output_files}})
 
 
 
