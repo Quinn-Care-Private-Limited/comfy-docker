@@ -110,6 +110,7 @@ class ProgressTracker:
         self.node_progress = {node: 0 for node in payload}
         self.node_status = {node: 'pending' for node in payload}
         self.progress = 0
+        self.previous_node = None
 
     def update_progress(self, status_callback):
         try:
@@ -118,7 +119,12 @@ class ProgressTracker:
             if status_callback['type'] == 'executing':
                 node = data['node']
                 self.node_status[node] = 'executing'
-                self.node_progress[node] = 1  # Reset progress for executing node
+                self.node_progress[node] = 0  # Reset progress for executing node
+                if self.previous_node:
+                    self.node_status[self.previous_node] = 'completed'
+                    self.node_progress[self.previous_node] = 1
+                self.previous_node = node
+
 
             elif status_callback['type'] == 'progress':
                 node = data['node']
