@@ -25,11 +25,10 @@ def callback(data, callback_url=None):
 def get_status(run_id):
     return callback_data[run_id]
 
-def calculate_progress(tracker, data):
+def process_callback(tracker, data):
     data = utils.safe_parse(data)
     tracker.update_progress(data)
-    progress = tracker.calculate_overall_progress()
-    return {"progress": progress, "status": data}
+    return {"progress": tracker.progress, "status": data}
 
 def handler(job):
     """
@@ -60,10 +59,11 @@ def handler(job):
     # set callback for when comftroller processes incomming data
 
     tracker = utils.ProgressTracker(workflow)
+
     if(env == 'production'):
-        update_progress = lambda data: callback({"run_id": run_id, "status": "processing", "data": calculate_progress(tracker, data)})  
+        update_progress = lambda data: callback({"run_id": run_id, "status": "processing", "data": process_callback(tracker, data)})  
     else:
-        update_progress = lambda data: utils.log({"run_id": run_id, "status": "processing", "data": calculate_progress(tracker, data)})
+        update_progress = lambda data: utils.log({"run_id": run_id, "status": "processing", "data": process_callback(tracker, data)})
 
     input_files = job_input.get("files", [])
 

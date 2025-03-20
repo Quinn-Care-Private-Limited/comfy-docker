@@ -109,6 +109,7 @@ class ProgressTracker:
         self.total_nodes = len(payload)
         self.node_progress = {node: 0 for node in payload}
         self.node_status = {node: 'pending' for node in payload}
+        self.progress = 0
 
     def update_progress(self, status_callback):
         data = status_callback['data']
@@ -130,5 +131,4 @@ class ProgressTracker:
 
     def calculate_overall_progress(self):
         total_progress = sum(self.node_progress.values())
-        overall_progress = (total_progress / self.total_nodes) * 100
-        return overall_progress
+        self.progress = (total_progress / self.total_nodes) * 100
