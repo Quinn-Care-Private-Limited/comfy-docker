@@ -131,4 +131,4 @@ class ProgressTracker:
 
     def calculate_overall_progress(self):
         total_progress = sum(self.node_progress.values())
-        self.progress = (total_progress / self.total_nodes) * 100
+        self.progress = int((total_progress / self.total_nodes) * 100)
