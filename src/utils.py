@@ -113,13 +113,14 @@ class ProgressTracker:
 
     def update_progress(self, status_callback):
         data = status_callback['data']
-        node = data['node']
 
         if status_callback['type'] == 'executing':
+            node = data['node']
             self.node_status[node] = 'executing'
             self.node_progress[node] = 1  # Reset progress for executing node
 
         elif status_callback['type'] == 'progress':
+            node = data['node']
             self.node_status[node] = 'executing'
             self.node_progress[node] = data['value'] / data['max']
 
