@@ -117,15 +117,11 @@ class ProgressTracker:
 
         if status_callback['type'] == 'executing':
             self.node_status[node] = 'executing'
-            self.node_progress[node] = 0  # Reset progress for executing node
+            self.node_progress[node] = 1  # Reset progress for executing node
 
         elif status_callback['type'] == 'progress':
             self.node_status[node] = 'executing'
             self.node_progress[node] = data['value'] / data['max']
-
-        elif status_callback['type'] == 'completed':
-            self.node_status[node] = 'completed'
-            self.node_progress[node] = 1  # Mark node as fully completed
 
         self.calculate_overall_progress()
 
