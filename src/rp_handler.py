@@ -45,6 +45,7 @@ def handler(job):
     """
     run_id = job["id"]
     job_input = job["data"]["input"]  # input workflow
+    callback_data[run_id] = {"run_id": run_id, "status": "processing", "data": {"progress": 0}}
 
     # Validate inputs
     if job_input is None:
