@@ -3,6 +3,7 @@ import uuid
 import asyncio
 import rp_handler
 import os
+import gpustat
 
 port = int(os.environ.get('PORT', 3000))
 
@@ -33,7 +34,8 @@ def status(request):
     return web.json_response(rp_handler.callback_data[run_id])
 
 def health(request):
-    response_data = {"message": "OK"}
+    gpu_stats = gpustat.new_query()
+    response_data = {"status": "ok", "gpus": gpu_stats.gpus}
     response = web.json_response(response_data)
     return response
     
