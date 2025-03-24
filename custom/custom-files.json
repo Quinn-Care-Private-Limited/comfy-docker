@@ -9,5 +9,6 @@
   "https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes.git",
   "https://github.com/lujiazho/ComfyUI-CatvtonFluxWrapper.git",
   "https://github.com/john-mnz/ComfyUI-Inspyrenet-Rembg.git",
-  "https://github.com/rgthree/rgthree-comfy.git"
+  "https://github.com/rgthree/rgthree-comfy.git",
+  "https://github.com/tsogzark/ComfyUI-load-image-from-url.git"
 ]
