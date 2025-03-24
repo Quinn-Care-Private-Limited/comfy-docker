@@ -15,6 +15,7 @@ ENV DATA_PATH=/comfyui/data
 ENV MODELS_PATH=/comfyui/models
 ENV EXTRA_MODELS_PATH=/comfyui/extra_models
 
+
 ### Install Python, git and other necessary tools
 RUN apt-get update && apt-get install -y \
     python3-pip \
@@ -82,6 +83,8 @@ RUN pip3 cache purge
 ADD custom/extra_model_paths.yaml /comfyui/
 ADD src/ ./
 RUN chmod +x start.sh
+
+ENV GOOGLE_APPLICATION_CREDENTIALS=/gcp.json
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["/app/start.sh"]

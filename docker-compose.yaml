@@ -6,6 +6,8 @@ services:
     privileged: true
     runtime: nvidia
     network_mode: "host"
+    volumes:
+      - /root/gcp.json:/gcp.json
     env_file: .env
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
