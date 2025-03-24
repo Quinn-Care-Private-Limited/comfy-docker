@@ -1,23 +1,12 @@
 """
 This module contains utility functions for file handling.
 """
-
-
 # required imports for utility functions:
 import base64
 import json 
+import os
 
-# # import nudenet lib: (nudity detection)
-# # see: https://github.com/notAI-tech/NudeNet/tree/v3
-# from nudenet import NudeDetector
-
-# def detect_nudity(img_file):
-#     """
-#     Returns:
-#     list: of detected nudity for img_file if able
-#     """
-#     log(f"scanning nudity for {img_file}")
-#     return NudeDetector().detect(img_file) 
+FILE_PATH = os.getenv("DATA_PATH", "/tmp/")
 
 
 def log(string):
@@ -102,6 +91,28 @@ def safe_parse(data):
     except json.JSONDecodeError:
         return {"error": "Invalid JSON", "raw_data": data}  
     
+
+def upload_file_gcs(file_names, bucket_name):
+    """
+    Uploads a file to a Google Cloud Storage bucket.
+
+    Args:
+    - file_names (str[]): The path to the file to upload.
+    - bucket_name (str): The name of the bucket to upload to.
+    """
+
+    from google.cloud import storage
+
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+
+    for name in file_names:
+        file_path = f"{FILE_PATH}/{name}"
+        blob = bucket.blob(file_path)
+        blob.upload_from_filename(file_path)
+        log(f"File {file_path} uploaded to {bucket_name}.")
+
+    return True
 
 class ProgressTracker:
     def __init__(self, payload):

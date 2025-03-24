@@ -44,7 +44,9 @@ def handler(job):
         dict: A dictionary containing either an error message or a success status with generated images.
     """
     run_id = job["id"]
-    job_input = job["data"]["input"]  # input workflow
+    job_input = job["data"]["input"] 
+    bucket = job["data"]["bucket"] 
+    # input workflow
     callback_data[run_id] = {"run_id": run_id, "status": "processing", "data": {"progress": 0}}
 
     # Validate inputs
@@ -104,6 +106,9 @@ def handler(job):
         utils.log("---- OUTPUT DATAS ----")
         utils.log(output_datas)
         utils.log("")
+
+    if bucket is not None:
+        utils.upload_file_gcs(output_files, bucket)
 
     callback({"run_id": run_id, "status": "completed", "data": {"progress": 100, "output": output_files}})
 
