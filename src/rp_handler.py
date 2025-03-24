@@ -45,7 +45,7 @@ def handler(job):
     """
     run_id = job["id"]
     job_input = job["data"]["input"] 
-    bucket = job["data"]["bucket"] 
+
     # input workflow
     callback_data[run_id] = {"run_id": run_id, "status": "processing", "data": {"progress": 0}}
 
@@ -107,8 +107,8 @@ def handler(job):
         utils.log(output_datas)
         utils.log("")
 
-    if bucket is not None:
-        utils.upload_file_gcs(output_files, bucket)
+    if "bucket" in job["data"]:
+        utils.upload_file_gcs(output_files, job["data"]["bucket"])
 
     callback({"run_id": run_id, "status": "completed", "data": {"progress": 100, "output": output_files}})
 
