@@ -105,7 +105,7 @@ def upload_file_gcs(file_names, bucket_path):
 
     # get the bucket key from bucket name
     bucket_name = bucket_path.split("/")[0]
-    bucket_key = bucket_path.split("/")[1:].join("/")
+    bucket_key = "/".join(bucket_path.split("/")[1:])
 
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
