@@ -108,7 +108,7 @@ def upload_file_gcs(file_names, bucket_name):
 
     for name in file_names:
         file_path = f"{FILE_PATH}/{name}"
-        blob = bucket.blob(file_path)
+        blob = bucket.blob(name)
         blob.upload_from_filename(file_path)
         log(f"File {file_path} uploaded to {bucket_name}.")
 
