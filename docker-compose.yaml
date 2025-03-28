@@ -1,7 +1,7 @@
 services:
   comfyui:
     build: ./
-    image: quinninc/comfy:1.9.0
+    image: quinninc/comfy:2.0.0
     container_name: comfyui-worker
     privileged: true
     runtime: nvidia
