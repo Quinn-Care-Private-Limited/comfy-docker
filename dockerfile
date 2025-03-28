@@ -64,7 +64,7 @@ RUN for dir in /comfyui/custom_nodes/*/; do \
     fi; \
     done
 
-RUN pip3 install huggingface-hub onnxruntime diffusers
+RUN pip3 install huggingface-hub onnxruntime diffusers sageattention==1.0.6 triton==3.2.0
 RUN mkdir -p /comfyui/data
 RUN mkdir -p /comfyui/extra_models/loras
 
