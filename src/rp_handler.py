@@ -85,7 +85,7 @@ def handler(job):
     # Fetching generated images
     output_files = [] # array of output filepath/urls
     output_datas = {} # dict of nont image output node datas as {"nodeid":{"outputdata":...}}
-
+    utils.log(outputs)
     # uglry nesterd lewpz: el boo!
     for node_id, node_output in outputs.items():
         # add output data to output_datas if not images or gifs data
