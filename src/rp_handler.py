@@ -99,6 +99,15 @@ def handler(job):
                     else:    
                         path = f"{data['subfolder']}/{data['filename']}"
                     output_files.append(path)
+        
+        if "gifs" in node_output:
+            for data in node_output["gifs"]:
+                output_datas[node_id] = node_output
+                if(data['subfolder'] == ''):
+                    path = f"{data['filename']}"
+                else:    
+                    path = f"{data['subfolder']}/{data['filename']}"
+                output_files.append(path)
 
     # if you dont know what this does... you shouldnt be here.
     utils.log(f"#files generated: {len(output_files)}")

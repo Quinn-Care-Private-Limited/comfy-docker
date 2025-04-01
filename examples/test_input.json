@@ -1,123 +1,209 @@
 {
   "input": {
-    "4": {
+    "wUKot": {
       "inputs": {
-        "clip_name1": "clip_l.safetensors",
-        "clip_name2": "t5xxl_fp16.safetensors",
-        "type": "flux",
-        "device": "default"
+        "url_or_path": "https://storage.googleapis.com/quinn-coldplay/cm8x54tcc0013ruov2vu51ltg/cm8x54tcc0013ruov2vu51ltg_cm8x54trm001hruov4nzlmtju_00001_.png"
       },
-      "class_type": "DualCLIPLoader",
-      "_meta": {
-        "title": "DualCLIPLoader"
-      }
+      "class_type": "LoadImageFromUrlOrPath",
+      "_meta": { "title": "Load Start Image" }
     },
-    "6": {
+    "Z94y8": {
       "inputs": {
-        "width": 1024,
-        "height": 768,
-        "batch_size": 1
+        "image": ["wUKot", 0],
+        "width": 720,
+        "height": 1280,
+        "interpolation": "lanczos",
+        "method": "fill / crop",
+        "condition": "always",
+        "multiple_of": 16
       },
-      "class_type": "EmptyLatentImage",
-      "_meta": {
-        "title": "Empty Latent Image"
-      }
+      "class_type": "ImageResize+",
+      "_meta": { "title": "Image Resize" }
     },
-    "7": {
+    "hsZlK": {
       "inputs": {
-        "samples": ["49", 0],
-        "vae": ["8", 0]
+        "url_or_path": "https://storage.googleapis.com/quinn-coldplay/org_2uRK5d5oMuss5hEdrotp22wqsTJ/cm8px2p6e0003rukm0750tjz4/cm8px2or90001rukmd6tm7q3x_cm8px2p6e0003rukm0750tjz4_00001_.png"
       },
-      "class_type": "VAEDecode",
-      "_meta": {
-        "title": "VAE Decode"
-      }
+      "class_type": "LoadImageFromUrlOrPath",
+      "_meta": { "title": "Load End Image" }
     },
-    "8": {
+    "scMhT": {
       "inputs": {
-        "vae_name": "ae.safetensors"
+        "image": ["hsZlK", 0],
+        "width": ["Z94y8", 1],
+        "height": ["Z94y8", 2],
+        "interpolation": "lanczos",
+        "method": "fill / crop",
+        "condition": "always",
+        "multiple_of": 16
       },
-      "class_type": "VAELoader",
-      "_meta": {
-        "title": "Load VAE"
-      }
+      "class_type": "ImageResize+",
+      "_meta": { "title": "Image Resize" }
     },
-    "21": {
+    "jRwZb": {
       "inputs": {
-        "images": ["7", 0]
+        "model_name": "open-clip-xlm-roberta-large-vit-huge-14_visual_fp16.safetensors",
+        "precision": "fp16",
+        "load_device": "main_device"
       },
-      "class_type": "PreviewImage",
-      "_meta": {
-        "title": "Preview Image"
-      }
+      "class_type": "LoadWanVideoClipTextEncoder",
+      "_meta": { "title": "Load Wan Video Clip Text Encoder" }
     },
-    "32": {
+    "Qh_Xl": {
       "inputs": {
-        "unet_name": "flux1-dev-fp8.safetensors",
-        "weight_dtype": "fp8_e4m3fn"
+        "clip_vision": ["jRwZb", 0],
+        "image_1": ["Z94y8", 0],
+        "strength_1": 1,
+        "strength_2": 1,
+        "crop": "center",
+        "combine_embeds": "average",
+        "force_offload": false,
+        "tiles": 0,
+        "ratio": 0.5,
+        "image_2": ["scMhT", 0]
       },
-      "class_type": "UNETLoader",
-      "_meta": {
-        "title": "Load Diffusion Model"
-      }
+      "class_type": "WanVideoClipVisionEncode",
+      "_meta": { "title": "Clip Vision Encode" }
     },
-    "49": {
+    "S91Cr": {
       "inputs": {
-        "seed": 199643624487430,
-        "steps": 20,
-        "cfg": 1,
-        "sampler_name": "euler",
-        "scheduler": "simple",
-        "denoise": 1,
-        "model": ["32", 0],
-        "positive": ["53", 0],
-        "negative": ["54", 0],
-        "latent_image": ["6", 0]
+        "model_name": "umt5_xxl_fp16.safetensors",
+        "precision": "bf16",
+        "load_device": "main_device",
+        "quantization": "disabled"
       },
-      "class_type": "KSampler",
-      "_meta": {
-        "title": "KSampler"
-      }
+      "class_type": "LoadWanVideoT5TextEncoder",
+      "_meta": { "title": "Load WanVideo T5 TextEncoder" }
     },
-    "51": {
+    "2HqWY": {
       "inputs": {
-        "text": " living room with a sofa and tv",
-        "clip": ["4", 0]
+        "blocks_to_swap": 20,
+        "offload_img_emb": false,
+        "offload_txt_emb": false,
+        "use_non_blocking": true
       },
-      "class_type": "CLIPTextEncode",
-      "_meta": {
-        "title": "CLIP Text Encode (Prompt)"
-      }
+      "class_type": "WanVideoBlockSwap",
+      "_meta": { "title": "WanVideo BlockSwap" }
     },
-    "52": {
+    "VDwXe": {
       "inputs": {
-        "text": "bad photo",
-        "clip": ["4", 0]
+        "model": "Wan2_1-I2V-14B-720P_fp8_e4m3fn.safetensors",
+        "base_precision": "fp16",
+        "quantization": "fp8_e4m3fn",
+        "load_device": "main_device",
+        "attention_mode": "sageattn",
+        "block_swap_args": ["2HqWY", 0]
       },
-      "class_type": "CLIPTextEncode",
-      "_meta": {
-        "title": "CLIP Text Encode (Prompt)"
-      }
+      "class_type": "WanVideoModelLoader",
+      "_meta": { "title": "WanVideo Model Loader" }
     },
-    "53": {
+    "tSsYO": {
       "inputs": {
-        "guidance": 4.2,
-        "conditioning": ["51", 0]
+        "model_name": "wan_2.1_vae.safetensors",
+        "precision": "bf16"
       },
-      "class_type": "FluxGuidance",
-      "_meta": {
-        "title": "FluxGuidance"
-      }
+      "class_type": "WanVideoVAELoader",
+      "_meta": { "title": "WanVideo VAE Loader" }
     },
-    "54": {
+    "Q7d8O": {
       "inputs": {
-        "guidance": 4.2,
-        "conditioning": ["52", 0]
+        "positive_prompt": "A beautiful woman in a red dress",
+        "negative_prompt": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走",
+        "force_offload": false,
+        "t5": ["S91Cr", 0],
+        "model_to_offload": ["VDwXe", 0]
       },
-      "class_type": "FluxGuidance",
-      "_meta": {
-        "title": "FluxGuidance"
-      }
+      "class_type": "WanVideoTextEncode",
+      "_meta": { "title": "WanVideo TextEncode" }
+    },
+    "1TK8I": {
+      "inputs": {
+        "rel_l1_thresh": 0.22000000000000006,
+        "start_step": 1,
+        "end_step": -1,
+        "cache_device": "main_device",
+        "use_coefficients": "true",
+        "mode": "e"
+      },
+      "class_type": "WanVideoTeaCache",
+      "_meta": { "title": "WanVideo TeaCache" }
+    },
+    "5hiph": {
+      "inputs": {
+        "blocks": "9",
+        "start_percent": 0.20000000000000004,
+        "end_percent": 0.8000000000000002
+      },
+      "class_type": "WanVideoSLG",
+      "_meta": { "title": "WanVideo SLG" }
+    },
+    "NAyNI": {
+      "inputs": {
+        "width": ["Z94y8", 1],
+        "height": ["Z94y8", 2],
+        "num_frames": 45,
+        "noise_aug_strength": 0.26,
+        "start_latent_strength": 1,
+        "end_latent_strength": true,
+        "force_offload": false,
+        "fun_model": false,
+        "start_image": ["Z94y8", 0],
+        "vae": ["tSsYO", 0],
+        "clip_embeds": ["Qh_Xl", 0]
+      },
+      "class_type": "WanVideoImageToVideoEncode",
+      "_meta": { "title": "WanVideo ImageToVideo Encode" }
+    },
+    "iNjYK": {
+      "inputs": {
+        "steps": 5,
+        "cfg": 4.000000000000001,
+        "shift": 7.000000000000002,
+        "seed": 1743511442054,
+        "force_offload": false,
+        "scheduler": "unipc",
+        "riflex_freq_index": 0,
+        "denoise_strength": 1,
+        "batched_cfg": "",
+        "rope_function": "comfy",
+        "model": ["VDwXe", 0],
+        "text_embeds": ["Q7d8O", 0],
+        "image_embeds": ["NAyNI", 0],
+        "teacache_args": ["1TK8I", 0],
+        "slg_args": ["5hiph", 0]
+      },
+      "class_type": "WanVideoSampler",
+      "_meta": { "title": "WanVideo Sampler" }
+    },
+    "j6Sy5": {
+      "inputs": {
+        "enable_vae_tiling": false,
+        "tile_x": 272,
+        "tile_y": 272,
+        "tile_stride_x": 144,
+        "tile_stride_y": 128,
+        "vae": ["tSsYO", 0],
+        "samples": ["iNjYK", 0]
+      },
+      "class_type": "WanVideoDecode",
+      "_meta": { "title": "WanVideo Decode" }
+    },
+    "FaslK": {
+      "inputs": {
+        "frame_rate": 16,
+        "loop_count": 0,
+        "filename_prefix": "1743511442019",
+        "format": "video/h264-mp4",
+        "pix_fmt": "yuv420p",
+        "crf": 19,
+        "save_metadata": false,
+        "trim_to_audio": false,
+        "pingpong": false,
+        "save_output": true,
+        "images": ["j6Sy5", 0]
+      },
+      "class_type": "VHS_VideoCombine",
+      "_meta": { "title": "Video Combine" }
     }
   }
 }
