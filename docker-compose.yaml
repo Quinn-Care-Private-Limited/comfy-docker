@@ -1,7 +1,7 @@
 services:
   comfy:
     build: ./
-    image: quinninc/comfy:2.0.0
+    image: quinninc/comfy:2.1.0
     container_name: comfy
     privileged: true
     runtime: nvidia
