@@ -13,6 +13,7 @@ import threading
 import websockets
 import asyncio
 import base64
+import os
 
 # local modules: 
 import utils 
@@ -23,8 +24,10 @@ import utils
 ###
 ##################################################
 
+comfy_port = int(os.environ.get('COMFY_PORT', 8188))
+
 # HOSTNAME and PORT where ComfyUI is running
-HOSTPORTNAME = "127.0.0.1:8188"
+HOSTPORTNAME = f"127.0.0.1:${comfy_port}"
 
 # Time to wait between API check attempts in milliseconds
 API_AVAILABLE_INTERVAL_MS = 1000

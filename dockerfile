@@ -11,6 +11,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 
 
 ENV PORT=80
+ENV COMFY_PORT=8188
 ENV DATA_PATH=/comfyui/data
 ENV MODELS_PATH=/comfyui/models
 ENV EXTRA_MODELS_PATH=/comfyui/extra_models
