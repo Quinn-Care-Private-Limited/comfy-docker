@@ -28,7 +28,7 @@ def callback(job, data):
 def process_callback(tracker, data):
     data = utils.safe_parse(data)
     tracker.update_progress(data)
-    return {"progress": tracker.progress, "status": data}
+    return {"progress": tracker.progress}
     
 def handler(job):
     """
