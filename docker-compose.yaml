@@ -6,6 +6,13 @@ services:
     privileged: true
     runtime: nvidia
     network_mode: "host"
-    env_file: .env
+    volumes:
+      # mount output folder so you can see output files
+      - ./output:/comfyui/output
+      # mount 'volume/localmount' to act as a runpod volume clone
+      - ./volume:/runpod-volume
+      # mount test_input.json so we dont need to rebuild if just changing that
+      - ./examples/test_input.json:/test_input.json
     environment:
+      - ENV=development
       - NVIDIA_VISIBLE_DEVICES=all
