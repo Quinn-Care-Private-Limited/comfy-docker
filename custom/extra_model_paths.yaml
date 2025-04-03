@@ -1,5 +1,4 @@
-# comfyui:
-#     base_path: /comfyui/extra_models/
-#     # You can use is_default to mark that these folders should be listed first, and used as the default dirs for eg downloads
-#     #is_default: true
-#     loras: loras/
+comfyui:
+    # base_path: /runpod-volume/ 
+    # custom_nodes: /runpod-volume/custom_nodes/
+    loras: /runpod-volume/models/loras/
