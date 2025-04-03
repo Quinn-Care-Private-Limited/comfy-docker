@@ -92,13 +92,14 @@ def safe_parse(data):
         return {"error": "Invalid JSON", "raw_data": data}  
     
 
-def upload_file_gcs(file_names, bucket_path):
+def upload_file_gcs(file_names, bucket_path, creds):
     """
     Uploads a file to a Google Cloud Storage bucket.
 
     Args:
     - file_names (str[]): The path to the file to upload.
     - bucket_name (str): The name of the bucket to upload to.
+    - creds (google.auth.credentials.Credentials): The credentials to use for authentication.
     """
 
     from google.cloud import storage
@@ -107,7 +108,7 @@ def upload_file_gcs(file_names, bucket_path):
     bucket_name = bucket_path.split("/")[0]
     bucket_key = "/".join(bucket_path.split("/")[1:])
 
-    storage_client = storage.Client()
+    storage_client = storage.Client(credentials=creds)
     bucket = storage_client.bucket(bucket_name)
 
     for name in file_names:

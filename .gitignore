@@ -6,4 +6,5 @@ custom/custom_nodes/*
 custom/models/*
 output/*
 .env
+gcp.json
 __pycache__/

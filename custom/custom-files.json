@@ -1,17 +1,78 @@
 [
-  "https://github.com/storyicon/comfyui_segment_anything.git",
-  "https://github.com/kijai/ComfyUI-KJNodes.git",
-  "https://github.com/Acly/comfyui-inpaint-nodes.git",
-  "https://github.com/WASasquatch/was-node-suite-comfyui.git",
-  "https://github.com/cubiq/ComfyUI_essentials.git",
-  "https://github.com/Fannovel16/comfyui_controlnet_aux.git",
-  "https://github.com/1038lab/ComfyUI-RMBG.git",
-  "https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes.git",
-  "https://github.com/lujiazho/ComfyUI-CatvtonFluxWrapper.git",
-  "https://github.com/john-mnz/ComfyUI-Inspyrenet-Rembg.git",
-  "https://github.com/rgthree/rgthree-comfy.git",
-  "https://github.com/tsogzark/ComfyUI-load-image-from-url.git",
-  "https://github.com/kijai/ComfyUI-WanVideoWrapper.git",
-  "https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git",
-  "https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git"
+  {
+    "url": "https://github.com/storyicon/comfyui_segment_anything.git",
+    "path": "/comfyui/custom_nodes/comfyui_segment_anything"
+  },
+  {
+    "url": "https://github.com/kijai/ComfyUI-KJNodes.git",
+    "path": "/comfyui/custom_nodes/ComfyUI-KJNodes"
+  },
+  {
+    "url": "https://github.com/Acly/comfyui-inpaint-nodes.git",
+    "path": "/comfyui/custom_nodes/comfyui-inpaint-nodes"
+  },
+  {
+    "url": "https://github.com/WASasquatch/was-node-suite-comfyui.git",
+    "path": "/comfyui/custom_nodes/was-node-suite-comfyui"
+  },
+  {
+    "url": "https://github.com/cubiq/ComfyUI_essentials.git",
+    "path": "/comfyui/custom_nodes/ComfyUI_essentials"
+  },
+  {
+    "url": "https://github.com/Fannovel16/comfyui_controlnet_aux.git",
+    "path": "/comfyui/custom_nodes/comfyui_controlnet_aux"
+  },
+  {
+    "url": "https://github.com/1038lab/ComfyUI-RMBG.git",
+    "path": "/comfyui/custom_nodes/ComfyUI-RMBG"
+  },
+  {
+    "url": "https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes.git",
+    "path": "/comfyui/custom_nodes/Derfuu_ComfyUI_ModdedNodes"
+  },
+  {
+    "url": "https://github.com/lujiazho/ComfyUI-CatvtonFluxWrapper.git",
+    "path": "/comfyui/custom_nodes/ComfyUI-CatvtonFluxWrapper"
+  },
+  {
+    "url": "https://github.com/john-mnz/ComfyUI-Inspyrenet-Rembg.git",
+    "path": "/comfyui/custom_nodes/ComfyUI-Inspyrenet-Rembg"
+  },
+  {
+    "url": "https://github.com/rgthree/rgthree-comfy.git",
+    "path": "/comfyui/custom_nodes/rgthree-comfy"
+  },
+  {
+    "url": "https://github.com/tsogzark/ComfyUI-load-image-from-url.git",
+    "path": "/comfyui/custom_nodes/ComfyUI-load-image-from-url"
+  },
+  {
+    "url": "https://github.com/kijai/ComfyUI-WanVideoWrapper.git",
+    "path": "/comfyui/custom_nodes/ComfyUI-WanVideoWrapper"
+  },
+  {
+    "url": "https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git",
+    "path": "/comfyui/custom_nodes/ComfyUI-VideoHelperSuite"
+  },
+  {
+    "url": "https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git",
+    "path": "/comfyui/custom_nodes/ComfyUI-Frame-Interpolation"
+  },
+  {
+    "url": "https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/open-clip-xlm-roberta-large-vit-huge-14_visual_fp16.safetensors",
+    "path": "/comfyui/models/clip/open-clip-xlm-roberta-large-vit-huge-14_visual_fp16.safetensors"
+  },
+  {
+    "url": "https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/umt5-xxl-enc-bf16.safetensors",
+    "path": "/comfyui/models/clip/umt5_xxl_fp16.safetensors"
+  },
+  {
+    "url": "https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1_VAE_bf16.safetensors",
+    "path": "/comfyui/models/vae/wan_2.1_vae.safetensors"
+  },
+  {
+    "url": "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/diffusion_models/wan2.1_i2v_720p_14B_fp16.safetensors",
+    "path": "/comfyui/models/diffusion_models/wan2.1_i2v_720p_14B_fp16.safetensors"
+  }
 ]

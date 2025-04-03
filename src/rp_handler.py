@@ -7,6 +7,7 @@ import json
 # src imports
 import comftroller
 import utils 
+import runpod
 
 # additional outputs logging. helpful for testing 
 LOG_JOB_OUTPUTS = True
@@ -14,22 +15,11 @@ env = os.environ.get('ENV', 'production')
 
 utils.log(f"ENV: {env}")
 
-callback_data = {}
 
-def callback(data, callback_url=None):
-    callback_data[data["run_id"]] = data
-    if(callback_url is None):
-        return
-    requests.post(callback_url, headers={'Content-Type': 'application/json'}, data=json.dumps(data))  
 
-def get_status(run_id):
-    return callback_data[run_id]
-
-def process_callback(tracker, data):
-    data = utils.safe_parse(data)
-    tracker.update_progress(data)
-    return {"progress": tracker.progress, "status": data}
-
+def callback(job, data):
+    runpod.serverless.progress_update(job, data)
+    
 def handler(job):
     """
     The main function that handles a job of generating an image.
@@ -46,8 +36,6 @@ def handler(job):
     run_id = job["id"]
     job_input = job["data"]["input"] 
 
-    # input workflow
-    callback_data[run_id] = {"run_id": run_id, "status": "processing", "data": {"progress": 0}}
 
     # Validate inputs
     if job_input is None:
@@ -63,11 +51,8 @@ def handler(job):
 
     tracker = utils.ProgressTracker(workflow)
 
-    if(env == 'production'):
-        update_progress = lambda data: callback({"run_id": run_id, "status": "processing", "data": process_callback(tracker, data)})  
-    else:
-        update_progress = lambda data: utils.log({"run_id": run_id, "status": "processing", "data": process_callback(tracker, data)})
-
+    update_progress = lambda data: callback(job, {"run_id": run_id, "status": "processing", "data": process_callback(tracker, data)})  
+    
     input_files = job_input.get("files", [])
 
     # outputs is equal to the completed comfyui job id history object
@@ -79,7 +64,7 @@ def handler(job):
 
     # if 'run' had an error, then stop job and return error as result
     if outputs.get('error'):
-        callback({"run_id": run_id, "status": "failed", "data": outputs.get('error')})
+        callback(job, {"run_id": run_id, "status": "failed", "data": outputs.get('error')})
         return
 
     # Fetching generated images
@@ -115,10 +100,10 @@ def handler(job):
         utils.log(output_datas)
         utils.log("")
 
-    if "bucket" in job["data"]:
-        utils.upload_file_gcs(output_files, job["data"]["bucket"])
+    if "bucket" in job["data"] and "creds" in job["data"]:
+        utils.upload_file_gcs(output_files, job["data"]["bucket"], job["data"]["creds"])
 
-    callback({"run_id": run_id, "status": "completed", "data": {"progress": 100, "output": output_files}})
+    callback(job, {"run_id": run_id, "status": "completed", "data": {"progress": 100, "output": output_files}})
 
 
 

@@ -10,12 +10,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     ### Ensures output from python is printed immediately to the terminal without buffering
     PYTHONUNBUFFERED=1 
 
-ENV PORT=80
 ENV COMFY_PORT=8188
-ENV DATA_PATH=/comfyui/data
-ENV MODELS_PATH=/comfyui/models
-ENV EXTRA_MODELS_PATH=/comfyui/extra_models
-
 
 ### Install Python, git and other necessary tools
 RUN apt-get update && apt-get install -y \
@@ -66,8 +61,6 @@ RUN for dir in /comfyui/custom_nodes/*/; do \
     done
 
 RUN pip3 install huggingface-hub onnxruntime diffusers sageattention==1.0.6 triton==3.0.0
-RUN mkdir -p /comfyui/data
-RUN mkdir -p /comfyui/extra_models/loras
 
 ### Go back to the root
 WORKDIR /app
@@ -84,8 +77,6 @@ RUN pip3 cache purge
 ADD custom/extra_model_paths.yaml /comfyui/
 ADD src/ ./
 RUN chmod +x start.sh
-
-ENV GOOGLE_APPLICATION_CREDENTIALS=/gcp.json
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["/app/start.sh"]
