@@ -2,8 +2,6 @@
 The main serverless worker module for runpod
 """
 import os
-import requests
-import json
 # src imports
 import comftroller
 import utils 
@@ -15,10 +13,11 @@ env = os.environ.get('ENV', 'production')
 
 utils.log(f"ENV: {env}")
 
-
-
 def callback(job, data):
-    runpod.serverless.progress_update(job, data)
+    if env == 'production':
+        runpod.serverless.callback(job, data)
+    else:   
+        utils.log(data)
     
 def handler(job):
     """
