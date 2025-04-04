@@ -109,6 +109,7 @@ def handler(job):
         utils.upload_file_gcs(output_files, job["data"]["bucket"])
 
     callback({"run_id": run_id, "status": "completed", "data": {"progress": 100, "output": output_files}})
+    return output_files
 
 
 
