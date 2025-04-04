@@ -6,7 +6,6 @@ import base64
 import json 
 import os
 
-FILE_PATH = os.getenv("DATA_PATH", "/tmp/")
 
 
 def log(string):
@@ -92,12 +91,12 @@ def safe_parse(data):
         return {"error": "Invalid JSON", "raw_data": data}  
     
 
-def upload_file_gcs(file_names, bucket_path):
+def upload_file_gcs(files, bucket_path):
     """
     Uploads a file to a Google Cloud Storage bucket.
 
     Args:
-    - file_names (str[]): The path to the file to upload.
+    - files ([{name: str, path: str}]): The path to the file to upload.
     - bucket_name (str): The name of the bucket to upload to.
     """
 
@@ -110,12 +109,11 @@ def upload_file_gcs(file_names, bucket_path):
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
 
-    for name in file_names:
-        file_path = f"{FILE_PATH}/{name}"
-        bucket_path = f"{bucket_key}/{name}"
+    for file in files:
+        bucket_path = f"{bucket_key}/{file.name}"
         blob = bucket.blob(bucket_path)
-        blob.upload_from_filename(file_path)
-        log(f"File {name} uploaded to {bucket_name} at {bucket_path}.")
+        blob.upload_from_filename(file.path)
+        log(f"File {file.name} uploaded to {bucket_name} at {bucket_path}.")
 
     return True
 

@@ -84,35 +84,25 @@ def handler(job):
 
     # Fetching generated images
     output_files = [] # array of output filepath/urls
-    output_datas = {} # dict of nont image output node datas as {"nodeid":{"outputdata":...}}
     # uglry nesterd lewpz: el boo!
     for node_id, node_output in outputs.items():
         # add output data to output_datas if not images or gifs data
         # scan job outputs for images/gifs (videos)
         if "images" in node_output:
             for data in node_output["images"]:
-                output_datas[node_id] = node_output
                 if data.get("type") == 'output':
-                    if(data['subfolder'] == ''):
-                        path = f"{data['filename']}"
-                    else:    
-                        path = f"{data['subfolder']}/{data['filename']}"
-                    output_files.append(path)
+                    output_files.append({"name": data['filename'], "path": data["fullpath"]})
         
         if "gifs" in node_output:
             for data in node_output["gifs"]:
-                output_datas[node_id] = node_output
-                if(data['subfolder'] == ''):
-                    path = f"{data['filename']}"
-                else:    
-                    path = f"{data['subfolder']}/{data['filename']}"
-                output_files.append(path)
+                if data.get("type") == 'output':
+                    output_files.append({"name": data['filename'], "path": data["fullpath"]})
 
     # if you dont know what this does... you shouldnt be here.
-    utils.log(f"#files generated: {len(output_files)}")
     if LOG_JOB_OUTPUTS:
-        utils.log("---- OUTPUT DATAS ----")
-        utils.log(output_datas)
+        utils.log(f"#files generated: {len(output_files)}")
+        utils.log("---- OUTPUT FILES ----")
+        utils.log(output_files)
         utils.log("")
 
     if "bucket" in job["data"]:
