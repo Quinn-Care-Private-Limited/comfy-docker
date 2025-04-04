@@ -2,5 +2,6 @@
 import rp_handler
 import runpod
 
-runpod.serverless.start({"handler": rp_handler.handler})
-    
+
+if __name__ == '__main__':
+    runpod.serverless.start({"handler": rp_handler.handler})
