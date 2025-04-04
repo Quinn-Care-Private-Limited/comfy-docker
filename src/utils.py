@@ -112,10 +112,10 @@ def upload_file_gcs(files, bucket_path, credentials):
     bucket = storage_client.bucket(bucket_name)
 
     for file in files:
-        bucket_path = f"{bucket_key}/{file.name}"
+        bucket_path = f"{bucket_key}/{file["name"]}"
         blob = bucket.blob(bucket_path)
-        blob.upload_from_filename(file.path)
-        log(f"File {file.name} uploaded to {bucket_name} at {bucket_path}.")
+        blob.upload_from_filename(file["path"])
+        log(f"File {file["name"]} uploaded to {bucket_name} at {bucket_path}.")
 
     return True
 
