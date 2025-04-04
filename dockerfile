@@ -78,8 +78,6 @@ ADD custom/extra_model_paths.yaml /comfyui/
 ADD src/ ./
 RUN chmod +x start.sh
 
-WORKDIR /
-ADD examples/test_input.json ./
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["/app/start.sh"]
