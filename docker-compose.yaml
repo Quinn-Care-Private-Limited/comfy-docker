@@ -9,7 +9,7 @@ services:
     volumes:
       - ./output:/comfyui/output
       - ./volume:/runpod-volume
-      - ./examples/test_input.json:/test_input.json
+      - ./examples:/
     environment:
       - ENV=development
       - NVIDIA_VISIBLE_DEVICES=all
