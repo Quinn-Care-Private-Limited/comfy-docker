@@ -4,11 +4,7 @@ This module contains utility functions for file handling.
 # required imports for utility functions:
 import base64
 import json 
-import os
 
-
-
-FILE_PATH = os.getenv("DATA_PATH", "/tmp/")
 
 
 def log(string):
@@ -94,12 +90,12 @@ def safe_parse(data):
         return {"error": "Invalid JSON", "raw_data": data}  
     
 
-def upload_file_gcs(file_names, bucket_path, credentials):
+def upload_file_gcs(files, bucket_path, credentials):
     """
     Uploads a file to a Google Cloud Storage bucket.
 
     Args:
-    - file_names (str[]): The path to the file to upload.
+    - files ({name: str, path: str}[]): The path to the file to upload.
     - bucket_name (str): The name of the bucket to upload to.
     - creds (google.auth.credentials.Credentials): The credentials to use for authentication.
     """
@@ -115,11 +111,10 @@ def upload_file_gcs(file_names, bucket_path, credentials):
     storage_client = storage.Client(credentials=creds)
     bucket = storage_client.bucket(bucket_name)
 
-    for name in file_names:
-        file_path = f"{FILE_PATH}/{name}"
+    for name, path in files.items():
         bucket_path = f"{bucket_key}/{name}"
         blob = bucket.blob(bucket_path)
-        blob.upload_from_filename(file_path)
+        blob.upload_from_filename(path)
         log(f"File {name} uploaded to {bucket_name} at {bucket_path}.")
 
     return True
