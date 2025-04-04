@@ -6,4 +6,5 @@ urllib3==2.3.0
 websockets==15.0
 gpustat
 google-cloud-storage
+google-auth
 runpod
