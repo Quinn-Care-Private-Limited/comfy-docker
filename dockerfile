@@ -65,7 +65,7 @@ RUN for dir in /comfyui/custom_nodes/*/; do \
     fi; \
     done
 
-RUN pip3 install huggingface-hub onnxruntime diffusers sageattention==1.0.6 triton==3.0.0
+RUN pip3 install huggingface-hub onnxruntime diffusers sageattention==1.0.6 triton==3.0.0 peft
 RUN mkdir -p /comfyui/data
 RUN mkdir -p /comfyui/extra_models/loras
 
@@ -86,6 +86,7 @@ ADD src/ ./
 RUN chmod +x start.sh
 
 ENV GOOGLE_APPLICATION_CREDENTIALS=/gcp.json
+ENV HF_HOME=/comfyui/models
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["/app/start.sh"]
