@@ -13,6 +13,8 @@ import runpod
 LOG_JOB_OUTPUTS = True
 env = os.environ.get('ENV', 'production')
 
+data_path = os.environ.get('DATA_PATH', '/comfyui/data')
+
 utils.log(f"ENV: {env}")
 
 def callback(job, data):
@@ -85,12 +87,12 @@ def handler(job):
         if "images" in node_output:
             for data in node_output["images"]:
                 if data.get("type") == 'output':
-                    output_files.append({"name": data['filename'], "path": data["fullpath"]})
+                    output_files.append({"name": data['filename'], "path": os.path.join(data_path, data['filename'])})
         
         if "gifs" in node_output:
             for data in node_output["gifs"]:
                 if data.get("type") == 'output':
-                    output_files.append({"name": data['filename'], "path": data["fullpath"]})
+                    output_files.append({"name": data['filename'], "path": os.path.join(data_path, data['filename'])})
 
     # if you dont know what this does... you shouldnt be here.
     if LOG_JOB_OUTPUTS:
