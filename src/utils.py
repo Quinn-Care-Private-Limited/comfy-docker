@@ -116,6 +116,7 @@ def upload_file_gcs(files, bucket_path):
         blob = bucket.blob(bucket_path)
         blob.upload_from_filename(file_path)
         log(f"File {file_name} uploaded to {bucket_name} at {bucket_path}.")
+        os.remove(file_path)
 
     return True
 
