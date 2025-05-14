@@ -106,8 +106,13 @@ def handler(job):
         utils.log(output_files)
         utils.log("")
 
-    if "bucket" in job["data"]:
-        utils.upload_file_gcs(output_files, job["data"]["bucket"])
+    try:
+        if "bucket" in job["data"]:
+            utils.upload_file_gcs(output_files, job["data"]["bucket"])
+    except Exception as e:
+        utils.log(f"Error uploading files to GCS: {e}")
+        callback({"run_id": run_id, "status": "failed", "data": {"error": "Error uploading files to GCS"}})
+        return output_files
 
     callback({"run_id": run_id, "status": "completed", "data": {"progress": 100, "output": output_files}})
     return output_files
