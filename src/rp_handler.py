@@ -108,7 +108,7 @@ def handler(job):
 
     try:
         if "bucket" in job["data"]:
-            utils.upload_file_gcs_path(output_files, job["data"]["bucket_folder"])
+            utils.upload_file_gcs_path(output_files, job["data"]["bucket"])
         elif "upload" in job["data"]:
             utils.upload_file_gcs(output_files[0], job["data"]["upload"]["bucket"], job["data"]["upload"]["key"])
     except Exception as e:
