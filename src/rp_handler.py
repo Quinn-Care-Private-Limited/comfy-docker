@@ -107,10 +107,10 @@ def handler(job):
         utils.log("")
 
     try:
-        if "bucket_folder" in job["data"]:
+        if "bucket" in job["data"]:
             utils.upload_file_gcs_path(output_files, job["data"]["bucket_folder"])
-        elif "bucket" in job["data"] and "key" in job["data"]:
-            utils.upload_file_gcs(output_files, job["data"]["bucket"], job["data"]["key"])
+        elif "upload" in job["data"]:
+            utils.upload_file_gcs(output_files, job["data"]["upload"]["bucket"], job["data"]["upload"]["key"])
     except Exception as e:
         utils.log(f"Error uploading files to GCS: {e}")
         callback({"run_id": run_id, "status": "failed", "data": {"error": "Error uploading files to GCS"}})
