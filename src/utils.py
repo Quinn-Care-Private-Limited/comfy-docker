@@ -91,7 +91,7 @@ def safe_parse(data):
         return {"error": "Invalid JSON", "raw_data": data}  
     
 
-def upload_file_gcs(files, bucket_path):
+def upload_file_gcs_path(files, bucket_path):
     """
     Uploads a file to a Google Cloud Storage bucket.
 
@@ -116,6 +116,31 @@ def upload_file_gcs(files, bucket_path):
         blob = bucket.blob(bucket_path)
         blob.upload_from_filename(file_path)
         log(f"File {file_name} uploaded to {bucket_name} at {bucket_path}.")
+        os.remove(file_path)
+
+    return True
+
+def upload_file_gcs(files, bucket, key):
+    """
+    Uploads a file to a Google Cloud Storage bucket.
+
+    Args:
+    - files ([{name: str, path: str}]): The path to the file to upload.
+    - bucket (str): The name of the bucket to upload to.
+    - key (str): The key to upload the file to.
+    """
+
+    from google.cloud import storage
+
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket)
+
+    for file in files:
+        file_name = file["name"]
+        file_path = file["path"]
+        blob = bucket.blob(key)
+        blob.upload_from_filename(file_path)
+        log(f"File {file_name} uploaded to {bucket} at {key}.")
         os.remove(file_path)
 
     return True
