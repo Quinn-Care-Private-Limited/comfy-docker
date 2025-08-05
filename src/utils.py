@@ -160,7 +160,7 @@ class ProgressTracker:
             if status_callback['type'] == 'executing':
                 node = data['node']
                 self.node_status[node] = 'executing'
-                self.node_progress[node] = 0  # Reset progress for executing node
+                # Don't reset progress - preserve existing progress to prevent going backwards
                 if self.previous_node:
                     self.node_status[self.previous_node] = 'completed'
                     self.node_progress[self.previous_node] = 1
@@ -170,7 +170,10 @@ class ProgressTracker:
             elif status_callback['type'] == 'progress':
                 node = data['node']
                 self.node_status[node] = 'executing'
-                self.node_progress[node] = data['value'] / data['max']
+                new_progress = data['value'] / data['max']
+                # Only update if progress is not reducing
+                if new_progress >= self.node_progress[node]:
+                    self.node_progress[node] = new_progress
 
             self.calculate_overall_progress()
         except Exception as e:

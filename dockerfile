@@ -1,5 +1,5 @@
 ### Use Nvidia CUDA base image
-FROM nvidia/cuda:12.6.2-cudnn-runtime-ubuntu22.04 AS base
+FROM nvidia/cuda:12.8.1-cudnn-runtime-ubuntu22.04 AS base
 
 USER root
 
@@ -42,7 +42,7 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui
 WORKDIR /comfyui
 
 ### set comfyui to specific commit id (useful if they update and introduce bugs...)
-# RUN git checkout 723847f6b3d5da21e5d712bc0139fb7197ba60a4
+RUN git checkout d8c51ba15aef6b0df86a7ea0203881be55d7579b
 
 ### Add /custom folder - this includes the installer script and any manually added custom nodes/models
 ADD custom/custom-files.json ./
@@ -50,7 +50,7 @@ ADD custom/custom-file-installer.py ./
 
 RUN pip3 install --upgrade pip
 
-RUN pip3 install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 --index-url https://download.pytorch.org/whl/cu124
+RUN pip3 install torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 --index-url https://download.pytorch.org/whl/cu128
 
 ### Install ComfyUI dependencies
 RUN pip3 install -r requirements.txt 
@@ -65,7 +65,7 @@ RUN for dir in /comfyui/custom_nodes/*/; do \
     fi; \
     done
 
-RUN pip3 install huggingface-hub onnxruntime diffusers sageattention==1.0.6 triton==3.0.0 peft
+RUN pip3 install huggingface-hub onnxruntime diffusers sageattention triton peft
 RUN mkdir -p /comfyui/data
 RUN mkdir -p /comfyui/extra_models/loras
 
