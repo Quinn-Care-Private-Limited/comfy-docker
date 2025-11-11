@@ -1,13 +1,11 @@
 services:
   comfy:
     build: ./
-    image: quinninc/comfy:2.13.0
+    image: quinninc/comfy:2.14.0
     container_name: comfy
     privileged: true
     runtime: nvidia
     network_mode: "host"
-    volumes:
-      - /root/gcp.json:/gcp.json
     env_file: .env
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
