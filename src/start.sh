@@ -17,7 +17,8 @@ if [ -n "$FS_SHARE" ]; then
   echo "Mounting completed."
 fi
 
-yq e '.comfyui.base_path = strenv(FS_PATH) + strenv(MODELS_PATH)' -i /comfyui/extra_model_paths.yaml
+# Update /comfyui/extra_model_paths.yaml to set comfyui.base_path using sed, since yq is not available
+sed -i "s|^\([[:space:]]*base_path:\).*|\1 \"$FS_PATH$MODELS_PATH\"|" /comfyui/extra_model_paths.yaml
 
 echo "worker-comfy: Starting ComfyUI"
 python3 /comfyui/main.py --listen --port $COMFY_PORT --input-directory $FS_PATH$DATA_PATH --output-directory $FS_PATH$DATA_PATH --disable-auto-launch --disable-metadata &

@@ -48,7 +48,7 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui
 WORKDIR /comfyui
 
 ### set comfyui to specific commit id (useful if they update and introduce bugs...)
-RUN git checkout d8c51ba15aef6b0df86a7ea0203881be55d7579b
+RUN git checkout 5ebcab3c7d974963a89cecd37296a22fdb73bd2b
 
 ### Add /custom folder - this includes the installer script and any manually added custom nodes/models
 ADD custom/custom-files.json ./

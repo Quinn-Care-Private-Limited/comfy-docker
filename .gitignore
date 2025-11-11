@@ -7,3 +7,4 @@ custom/models/*
 output/*
 .env
 __pycache__/
+fs/

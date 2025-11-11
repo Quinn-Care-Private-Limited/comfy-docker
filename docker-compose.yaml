@@ -7,5 +7,7 @@ services:
     runtime: nvidia
     network_mode: "host"
     env_file: .env
+    volumes:
+      - ./fs:/fs
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
