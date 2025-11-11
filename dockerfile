@@ -12,10 +12,16 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 ENV PORT=80
 ENV COMFY_PORT=8188
-ENV DATA_PATH=/comfyui/data
-ENV MODELS_PATH=/comfyui/models
-ENV EXTRA_MODELS_PATH=/comfyui/extra_models
 
+ENV FS_PATH=/fs
+ENV HF_HOME=/fs
+ENV GOOGLE_APPLICATION_CREDENTIALS=/fs/gcp.json
+
+ENV DATA_PATH=/data
+ENV MODELS_PATH=/models
+
+RUN mkdir -p $FS_PATH$DATA_PATH
+RUN mkdir -p $FS_PATH$MODELS_PATH
 
 ### Install Python, git and other necessary tools
 RUN apt-get update && apt-get install -y \
@@ -66,8 +72,6 @@ RUN for dir in /comfyui/custom_nodes/*/; do \
     done
 
 RUN pip3 install huggingface-hub onnxruntime diffusers sageattention triton peft
-RUN mkdir -p /comfyui/data
-RUN mkdir -p /comfyui/extra_models/loras
 
 ### Go back to the root
 WORKDIR /app
@@ -82,11 +86,9 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 RUN pip3 cache purge
 
 ADD custom/extra_model_paths.yaml /comfyui/
+
 ADD src/ ./
 RUN chmod +x start.sh
-
-ENV GOOGLE_APPLICATION_CREDENTIALS=/gcp.json
-ENV HF_HOME=/comfyui/models
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["/app/start.sh"]

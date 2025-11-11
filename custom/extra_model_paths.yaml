@@ -1,5 +1,5 @@
 comfyui:
-    base_path: /comfyui/extra_models/
+    base_path: /fs/models/
     # You can use is_default to mark that these folders should be listed first, and used as the default dirs for eg downloads
-    #is_default: true
+    is_default: true
     loras: loras/
