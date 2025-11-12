@@ -1,23 +1,21 @@
 """
 This module contains utility functions for file handling.
 """
+
 # required imports for utility functions:
 import base64
-import json 
+import json
 import os
-
 
 
 def log(string):
     """
     Logs string to console with basic system prefix
-    
+
     Args:
     - string (str): The string to log
     """
     print(f"[worker-comfy] {string}")
-
-
 
 
 def job_prop_to_bool(job_input, propname):
@@ -27,18 +25,19 @@ def job_prop_to_bool(job_input, propname):
 
     Args:
     - job_input (dict): A dictionary containing job input parameters.
-    
-    Returns: 
+
+    Returns:
     bool: True if job_input dict has propname that seems bool-ish
     """
     value = job_input.get(propname)
-    if value is None: return False
-    if isinstance(value, bool): return value
-    true_strings = ['true', 't', 'yes', 'y', 'ok', '1']
-    if isinstance(value, str): return value.lower().strip() in true_strings
+    if value is None:
+        return False
+    if isinstance(value, bool):
+        return value
+    true_strings = ["true", "t", "yes", "y", "ok", "1"]
+    if isinstance(value, str):
+        return value.lower().strip() in true_strings
     return False
-
-
 
 
 def validate_json(maybe_json):
@@ -47,13 +46,12 @@ def validate_json(maybe_json):
             maybe_json = json.loads(maybe_json)
         except json.JSONDecodeError:
             return None
-        
+
     # ensure workflow is valid JSON:
     if not isinstance(maybe_json, dict):
         return None
-    
-    return maybe_json
 
+    return maybe_json
 
 
 def error(error_message):
@@ -62,14 +60,12 @@ def error(error_message):
 
     Args:
     - error_message (string): A string containing the error emssage to show
-    
-    Returns: 
+
+    Returns:
     dict: containing error property with error message
-    """    
-    log(error_message) # log message then return error value
+    """
+    log(error_message)  # log message then return error value
     return {"error": error_message}
-
-
 
 
 def base64_encode(img_file):
@@ -80,16 +76,16 @@ def base64_encode(img_file):
     with open(img_file, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read())
         return encoded_string.decode("utf-8")
-    
-    
+
+
 def safe_parse(data):
     if isinstance(data, dict):
         return data
     try:
         return json.loads(data)  # Attempt to parse if it's a string
     except json.JSONDecodeError:
-        return {"error": "Invalid JSON", "raw_data": data}  
-    
+        return {"error": "Invalid JSON", "raw_data": data}
+
 
 def upload_file_gcs_path(files, bucket_path):
     """
@@ -120,6 +116,7 @@ def upload_file_gcs_path(files, bucket_path):
 
     return True
 
+
 def upload_file_gcs(file, bucket, key):
     """
     Uploads a file to a Google Cloud Storage bucket.
@@ -144,33 +141,33 @@ def upload_file_gcs(file, bucket, key):
 
     return True
 
+
 class ProgressTracker:
     def __init__(self, payload):
         self.payload = payload
         self.total_nodes = len(payload)
         self.node_progress = {node: 0 for node in payload}
-        self.node_status = {node: 'pending' for node in payload}
+        self.node_status = {node: "pending" for node in payload}
         self.progress = 0
         self.previous_node = None
 
     def update_progress(self, status_callback):
         try:
-            data = status_callback['data']
-    
-            if status_callback['type'] == 'executing':
-                node = data['node']
-                self.node_status[node] = 'executing'
+            data = status_callback["data"]
+
+            if status_callback["type"] == "executing":
+                node = data["node"]
+                self.node_status[node] = "executing"
                 # Don't reset progress - preserve existing progress to prevent going backwards
                 if self.previous_node:
-                    self.node_status[self.previous_node] = 'completed'
+                    self.node_status[self.previous_node] = "completed"
                     self.node_progress[self.previous_node] = 1
                 self.previous_node = node
 
-
-            elif status_callback['type'] == 'progress':
-                node = data['node']
-                self.node_status[node] = 'executing'
-                new_progress = data['value'] / data['max']
+            elif status_callback["type"] == "progress":
+                node = data["node"]
+                self.node_status[node] = "executing"
+                new_progress = data["value"] / data["max"]
                 # Only update if progress is not reducing
                 if new_progress >= self.node_progress[node]:
                     self.node_progress[node] = new_progress
