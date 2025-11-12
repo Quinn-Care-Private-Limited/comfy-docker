@@ -5,7 +5,7 @@ services:
       context: ./
       args:
         - HF_TOKEN=${HF_TOKEN}
-    image: quinninc/comfy:3.0.0-runpod-flux-kontext
+    image: quinninc/comfy:3.0.1-runpod-flux-kontext
     container_name: comfy
     privileged: true
     runtime: nvidia

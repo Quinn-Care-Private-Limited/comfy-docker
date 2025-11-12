@@ -53,11 +53,14 @@ def callback(data, callback_url=None, callback_auth_header=None):
     headers = {"Content-Type": "application/json"}
     if callback_auth_header:
         headers.update(callback_auth_header)
-    requests.post(
-        callback_url,
-        headers=headers,
-        data=json.dumps(data),
-    )
+    try:
+        requests.post(
+            callback_url,
+            headers=headers,
+            data=json.dumps(data),
+        )
+    except Exception as e:
+        utils.log(f"Error calling callback: {e}")
 
 
 def get_status(run_id):
