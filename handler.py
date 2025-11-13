@@ -1,3 +1,10 @@
-from src.main import run
+import runpod
+import src.handler as rp_handler
 
-run()
+
+def handler(job):
+    rp_handler.setup_storage_credentials()
+    return rp_handler.handler(job)
+
+
+runpod.serverless.start({"handler": handler})
