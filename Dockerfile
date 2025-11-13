@@ -22,6 +22,7 @@ ENV DATA_PATH=/data
 ENV MODELS_PATH=/models
 
 ARG HF_TOKEN
+ARG PRESET
 
 RUN mkdir -p $FS_PATH$DATA_PATH
 RUN mkdir -p $FS_PATH$MODELS_PATH
@@ -61,7 +62,7 @@ RUN pip3 install torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 --index-url 
 RUN pip3 install -r requirements.txt 
 
 ### Add /custom folder - this includes the installer script and any manually added custom nodes/models
-ADD custom/custom-files.json ./
+ADD custom/${PRESET}.json ./
 ADD custom/custom-file-installer.py ./
 ADD custom/extra_model_paths.yaml ./
 

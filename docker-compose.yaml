@@ -5,12 +5,13 @@ services:
       context: ./
       args:
         - HF_TOKEN=${HF_TOKEN}
-    image: quinninc/comfy:3.0.1-runpod-flux-kontext
+        - PRESET=${PRESET}
+    image: quinninc/comfy:3.0.1-runpod-${PRESET}
     container_name: comfy
     privileged: true
     runtime: nvidia
     network_mode: "host"
     volumes:
-      - ./examples/test_input.json:/app/test_input.json
+      - ./examples/${PRESET}-input.json:/app/test_input.json
     environment:
       - NVIDIA_VISIBLE_DEVICES=all

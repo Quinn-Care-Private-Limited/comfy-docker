@@ -60,7 +60,7 @@ def callback(data, callback_url=None, callback_auth_header=None):
             data=json.dumps(data),
         )
     except Exception as e:
-        utils.log(f"Error calling callback: {e}")
+        utils.log(f"Error calling callback")
 
 
 def get_status(run_id):

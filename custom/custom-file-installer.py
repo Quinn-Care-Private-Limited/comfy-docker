@@ -10,8 +10,13 @@ def log(message):
     # print(message, file=sys.stderr, flush=True)
 
 
+PRESET = os.environ.get("PRESET")
+log(f"PRESET: {PRESET}")
+
+
 # Load JSON data from the file
-json_file_path = "custom-files.json"  # Replace with the path to your JSON file
+json_file_path = f"{PRESET}.json"  # Replace with the path to your JSON file
+
 log(f"Loading custom files from {json_file_path}...")
 with open(json_file_path, "r") as json_file:
     data = json.load(json_file)
