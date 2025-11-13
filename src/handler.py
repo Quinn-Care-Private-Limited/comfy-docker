@@ -11,11 +11,11 @@ import comftroller
 import utils
 
 # additional outputs logging. helpful for testing
-LOG_JOB_OUTPUTS = True
 env = os.environ.get("ENV", "production")
 cloud_type = os.environ.get("CLOUD_TYPE")
 data_path = os.environ.get("FS_PATH") + os.environ.get("DATA_PATH")
 
+LOG_JOB_OUTPUTS = env == "development"
 
 utils.log(f"ENV: {env}")
 utils.log(f"CLOUD_TYPE: {cloud_type}")
@@ -37,32 +37,6 @@ def setup_storage_credentials():
         utils.log("No storage credentials set")
 
 
-def callback(data, callback_url=None, callback_auth_header=None):
-    callback_data[data["run_id"]] = data
-    if cloud_type == "RUNPOD":
-        import runpod
-
-        if env == "development":
-            utils.log(data)
-        else:
-            runpod.serverless.progress_update({"id": data["run_id"]}, data)
-
-    if callback_url is None:
-        return
-
-    headers = {"Content-Type": "application/json"}
-    if callback_auth_header:
-        headers.update(callback_auth_header)
-    try:
-        requests.post(
-            callback_url,
-            headers=headers,
-            data=json.dumps(data),
-        )
-    except Exception as e:
-        utils.log(f"Error calling callback")
-
-
 def get_status(run_id):
     return callback_data[run_id]
 
@@ -70,7 +44,7 @@ def get_status(run_id):
 def process_callback(tracker, data):
     data = utils.safe_parse(data)
     tracker.update_progress(data)
-    return {"progress": tracker.progress, "status": data}
+    return {"progress": tracker.progress}
 
 
 def handler(job):
@@ -89,8 +63,43 @@ def handler(job):
     run_id = job["id"]
     job_input = job["input"]
     workflow = job_input["workflow"]
+    metadata = job_input.get("metadata")
     callback_url = job_input.get("callback_url")
     callback_auth_header = job_input.get("callback_auth_header")
+
+    def callback(data):
+        prev_data = callback_data.get(data["run_id"])
+        prev_progress = prev_data.get("data", {}).get("progress", 0)
+        new_progress = data.get("data", {}).get("progress", 0)
+        status = data.get("status")
+
+        callback_data[data["run_id"]] = data
+
+        if prev_data and status == "processing" and prev_progress == new_progress:
+            return
+
+        if cloud_type == "RUNPOD":
+            import runpod
+
+            if env == "development":
+                utils.log(data)
+            else:
+                runpod.serverless.progress_update({"id": data["run_id"]}, data)
+
+        if callback_url is None:
+            return
+
+        headers = {"Content-Type": "application/json"}
+        if callback_auth_header:
+            headers.update(callback_auth_header)
+        try:
+            requests.post(
+                callback_url,
+                headers=headers,
+                data=json.dumps(data),
+            )
+        except Exception as e:
+            pass
 
     # input workflow
     callback_data[run_id] = {
@@ -120,9 +129,8 @@ def handler(job):
             "run_id": run_id,
             "status": "processing",
             "data": process_callback(tracker, data),
-        },
-        callback_url,
-        callback_auth_header,
+            "metadata": metadata,
+        }
     )
 
     input_files = job_input.get("files", [])
@@ -137,11 +145,14 @@ def handler(job):
     # if 'run' had an error, then stop job and return error as result
     if outputs.get("error"):
         callback(
-            {"run_id": run_id, "status": "failed", "data": outputs.get("error")},
-            callback_url,
-            callback_auth_header,
+            {
+                "run_id": run_id,
+                "status": "failed",
+                "data": {"error": outputs.get("error")},
+                "metadata": metadata,
+            },
         )
-        return
+        return {"error": outputs.get("error")}
 
     # Fetching generated images
     output_files = []  # array of output filepath/urls
@@ -192,19 +203,17 @@ def handler(job):
                 "run_id": run_id,
                 "status": "failed",
                 "data": {"error": "Error uploading files to GCS"},
+                "metadata": metadata,
             },
-            callback_url,
-            callback_auth_header,
         )
-        return output_files
+        return {"error": "Error uploading files to GCS"}
 
     callback(
         {
             "run_id": run_id,
             "status": "completed",
             "data": {"progress": 100, "output": output_files},
+            "metadata": metadata,
         },
-        callback_url,
-        callback_auth_header,
     )
-    return output_files
+    return {"output": output_files}
