@@ -1,5 +1,13 @@
 comfyui:
-    base_path: /comfyui/extra_models/
+    base_path: /fs/models/
     # You can use is_default to mark that these folders should be listed first, and used as the default dirs for eg downloads
-    #is_default: true
+    is_default: false
+    clip: clip/
+    clip_vision: clip_vision/
+    controlnet: controlnet/
+    diffusion_models: diffusion_models/
+    ultralytics: ultralytics/
     loras: loras/
+    text_encoders: text_encoders/
+    upscale_models: upscale_models/
+    vae: vae/

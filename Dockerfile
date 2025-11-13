@@ -12,10 +12,20 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 ENV PORT=80
 ENV COMFY_PORT=8188
-ENV DATA_PATH=/comfyui/data
-ENV MODELS_PATH=/comfyui/models
-ENV EXTRA_MODELS_PATH=/comfyui/extra_models
+ENV CLOUD_TYPE=RUNPOD
 
+ENV FS_PATH=/volume
+ENV HF_HOME=/volume
+ENV GOOGLE_APPLICATION_CREDENTIALS=/gcp.json
+
+ENV DATA_PATH=/data
+ENV MODELS_PATH=/models
+
+ARG HF_TOKEN
+ARG PRESET
+
+RUN mkdir -p $FS_PATH$DATA_PATH
+RUN mkdir -p $FS_PATH$MODELS_PATH
 
 ### Install Python, git and other necessary tools
 RUN apt-get update && apt-get install -y \
@@ -42,11 +52,7 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui
 WORKDIR /comfyui
 
 ### set comfyui to specific commit id (useful if they update and introduce bugs...)
-RUN git checkout d8c51ba15aef6b0df86a7ea0203881be55d7579b
-
-### Add /custom folder - this includes the installer script and any manually added custom nodes/models
-ADD custom/custom-files.json ./
-ADD custom/custom-file-installer.py ./
+RUN git checkout 5ebcab3c7d974963a89cecd37296a22fdb73bd2b
 
 RUN pip3 install --upgrade pip
 
@@ -55,8 +61,13 @@ RUN pip3 install torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 --index-url 
 ### Install ComfyUI dependencies
 RUN pip3 install -r requirements.txt 
 
+### Add /custom folder - this includes the installer script and any manually added custom nodes/models
+ADD custom/${PRESET}.json ./
+ADD custom/custom-file-installer.py ./
+ADD custom/extra_model_paths.yaml ./
+
 ### install each of the custom models/nodes etc within custom-files.json
-RUN python3 custom-file-installer.py 
+RUN python3 -u custom-file-installer.py 
 
 ### Check for custom nodes 'requirements.txt' files and then run install
 RUN for dir in /comfyui/custom_nodes/*/; do \
@@ -66,8 +77,6 @@ RUN for dir in /comfyui/custom_nodes/*/; do \
     done
 
 RUN pip3 install huggingface-hub onnxruntime diffusers sageattention triton peft
-RUN mkdir -p /comfyui/data
-RUN mkdir -p /comfyui/extra_models/loras
 
 ### Go back to the root
 WORKDIR /app
@@ -81,12 +90,8 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 # Clean up after pip installs
 RUN pip3 cache purge
 
-ADD custom/extra_model_paths.yaml /comfyui/
 ADD src/ ./
 RUN chmod +x start.sh
-
-ENV GOOGLE_APPLICATION_CREDENTIALS=/gcp.json
-ENV HF_HOME=/comfyui/models
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["/app/start.sh"]

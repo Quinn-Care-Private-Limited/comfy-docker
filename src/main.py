@@ -1,51 +1,67 @@
-from aiohttp import web
-import uuid
-import asyncio
-import rp_handler
 import os
-import gpustat
-import psutil
+import handler
 
-port = int(os.environ.get('PORT', 3000))
+port = int(os.environ.get("PORT", 3000))
+cloud_type = os.environ.get("CLOUD_TYPE")
 
-async def run_handler(run_id, data):
-     await asyncio.to_thread(rp_handler.handler, {
-        "id": run_id,
-        "data": data
-    })
 
-async def handle_post(request):
-    try:
-        data = await request.json()  # Read JSON data from the request
-        run_id = str(uuid.uuid4())   # Generate a unique job ID
+def run():
+    handler.setup_storage_credentials()
+    if cloud_type == "GCP" or cloud_type == "AWS":
+        import uuid
+        import asyncio
+        import gpustat
+        import psutil
+        from aiohttp import web
 
-        # Send response back immediately
-        response_data = {"message": "Job created!", "run_id": run_id}
-        response = web.json_response(response_data)
+        async def run_handler(run_id, data):
+            await asyncio.to_thread(handler.handler, {"id": run_id, "data": data})
 
-        # Schedule the rp_handler to run in the background
-        asyncio.create_task(run_handler(run_id, data))
+        async def handle_post(request):
+            try:
+                data = await request.json()  # Read JSON data from the request
+                run_id = str(uuid.uuid4())  # Generate a unique job ID
 
-        return response
-    except Exception as e:
-        return web.json_response({'error': str(e)}, status=500)
-    
-def status(request): 
-    run_id = request.match_info["run_id"]  # Extract path parameter
-    return web.json_response(rp_handler.callback_data[run_id])
+                # Send response back immediately
+                response_data = {"message": "Job created!", "run_id": run_id}
+                response = web.json_response(response_data)
 
-def health(request):
-    gpu_stats = gpustat.new_query()
-    response_data = {"status": "ok", "gpu": gpu_stats.gpus[0].utilization, "cpu": psutil.cpu_percent(interval=1)}
-    response = web.json_response(response_data)
-    return response
-    
+                # Schedule the rp_handler to run in the background
+                asyncio.create_task(run_handler(run_id, data))
 
-# Create the aiohttp web app
-app = web.Application()
-app.add_routes([web.get('/health', health)])  # Route for GET requests
-app.add_routes([web.post('/run', handle_post)])  # Route for POST requests
-app.add_routes([web.get('/status/{run_id}', status)])  # Route for POST requests
+                return response
+            except Exception as e:
+                return web.json_response({"error": str(e)}, status=500)
 
-if __name__ == '__main__':
-    web.run_app(app, port=port)
+        def status(request):
+            run_id = request.match_info["run_id"]  # Extract path parameter
+            return web.json_response(handler.callback_data[run_id])
+
+        def health(request):
+            gpu_stats = gpustat.new_query()
+            response_data = {
+                "status": "ok",
+                "gpu": gpu_stats.gpus[0].utilization,
+                "cpu": psutil.cpu_percent(interval=1),
+            }
+            response = web.json_response(response_data)
+            return response
+
+        # Create the aiohttp web app
+        app = web.Application()
+        app.add_routes([web.get("/health", health)])  # Route for GET requests
+        app.add_routes([web.post("/run", handle_post)])  # Route for POST requests
+        app.add_routes([web.get("/status/{run_id}", status)])  # Route for POST requests
+
+        web.run_app(app, port=port)
+
+    elif cloud_type == "RUNPOD":
+        import runpod
+
+        runpod.serverless.start({"handler": handler.handler})
+    else:
+        raise ValueError(f"Invalid cloud type: {cloud_type}")
+
+
+if __name__ == "__main__":
+    run()

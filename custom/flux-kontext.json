@@ -1,0 +1,58 @@
+[
+  {
+    "url": "https://github.com/kijai/ComfyUI-KJNodes.git",
+    "path": "/comfyui/custom_nodes/ComfyUI-KJNodes"
+  },
+  {
+    "url": "https://github.com/Acly/comfyui-inpaint-nodes.git",
+    "path": "/comfyui/custom_nodes/comfyui-inpaint-nodes"
+  },
+  {
+    "url": "https://github.com/WASasquatch/was-node-suite-comfyui.git",
+    "path": "/comfyui/custom_nodes/was-node-suite-comfyui"
+  },
+  {
+    "url": "https://github.com/cubiq/ComfyUI_essentials.git",
+    "path": "/comfyui/custom_nodes/ComfyUI_essentials"
+  },
+  {
+    "url": "https://github.com/Fannovel16/comfyui_controlnet_aux.git",
+    "path": "/comfyui/custom_nodes/comfyui_controlnet_aux"
+  },
+  {
+    "url": "https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes.git",
+    "path": "/comfyui/custom_nodes/Derfuu_ComfyUI_ModdedNodes"
+  },
+  {
+    "url": "https://github.com/tsogzark/ComfyUI-load-image-from-url.git",
+    "path": "/comfyui/custom_nodes/ComfyUI-load-image-from-url"
+  },
+  {
+    "url": "https://github.com/ltdrdata/ComfyUI-Impact-Pack.git",
+    "path": "/comfyui/custom_nodes/ComfyUI-Impact-Pack"
+  },
+  {
+    "url": "https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git",
+    "path": "/comfyui/custom_nodes/ComfyUI-Impact-Subpack"
+  },
+  {
+    "url": "https://github.com/welltop-cn/ComfyUI-TeaCache.git",
+    "path": "/comfyui/custom_nodes/ComfyUI-TeaCache"
+  },
+  {
+    "url": "https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev/resolve/main/flux1-kontext-dev.safetensors",
+    "path": "/comfyui/models/diffusion_models/flux1-kontext-dev.safetensors"
+  },
+  {
+    "url": "https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev/resolve/main/ae.safetensors",
+    "path": "/comfyui/models/vae/ae.safetensors"
+  },
+  {
+    "url": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors",
+    "path": "/comfyui/models/clip/t5xxl_fp8_e4m3fn_scaled.safetensors"
+  },
+  {
+    "url": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors",
+    "path": "/comfyui/models/clip/clip_l.safetensors"
+  }
+]
