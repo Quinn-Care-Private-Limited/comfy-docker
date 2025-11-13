@@ -1,0 +1,77 @@
+{
+  "title": "ComfyUI Serverless Worker",
+  "description": "A serverless worker for running ComfyUI workflows on Runpod. Supports Flux models, custom nodes, and advanced image generation workflows with progress tracking and GCS upload capabilities.",
+  "type": "serverless",
+  "category": "image",
+  "iconUrl": "https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/web/favicon.ico",
+
+  "config": {
+    "runsOn": "GPU",
+    "containerDiskInGb": 60,
+    "gpuCount": 1,
+    "gpuIds": "NVIDIA GeForce RTX 5090",
+    "allowedCudaVersions": [
+      "12.8"
+    ],
+    "presets": [
+      {
+        "name": "Flux Krea",
+        "defaults": {
+          "PRESET": "flux-krea"
+        }
+      },
+      {
+        "name": "Flux Kontext",
+        "defaults": {
+          "PRESET": "flux-kontext"
+        }
+      }
+    ],
+
+    "env": [
+      {
+        "key": "PRESET",
+        "input": {
+          "name": "Preset Configuration",
+          "type": "string",
+          "description": "Select the preset configuration (flux-krea or flux-kontext)",
+          "options": [
+            {"label": "Flux Krea", "value": "flux-krea"},
+            {"label": "Flux Kontext", "value": "flux-kontext"}
+          ],
+          "default": "flux-krea",
+          "advanced": false
+        }
+      },
+      {
+        "key": "HF_TOKEN",
+        "input": {
+          "name": "Hugging Face Token",
+          "type": "string",
+          "description": "Hugging Face API token for accessing private models (optional)",
+          "default": "",
+          "advanced": false
+        }
+      },
+      {
+        "key": "GCP_CREDENTIALS",
+        "input": {
+          "name": "GCP Credentials (Base64)",
+          "type": "string",
+          "description": "Base64 encoded Google Cloud Platform credentials JSON for GCS uploads (optional)",
+          "default": "",
+          "advanced": false
+        }
+      },
+      {
+        "key": "ENV",
+        "value": "production"
+      },
+      {
+        "key": "CLOUD_TYPE",
+        "value": "RUNPOD"
+      }
+    ]
+  }
+}
+
