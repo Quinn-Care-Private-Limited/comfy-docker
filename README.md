@@ -1,3 +1,4 @@
+[![Runpod](https://api.runpod.io/badge/Quinn-Care-Private-Limited/comfy-docker)](https://console.runpod.io/hub/Quinn-Care-Private-Limited/comfy-docker)
 # ComfyUI Serverless Worker
 
 A production-ready serverless worker for running ComfyUI workflows on Runpod. This worker supports Flux models, custom nodes, and advanced image generation workflows with real-time progress tracking and Google Cloud Storage (GCS) upload capabilities.
