@@ -2,11 +2,11 @@ services:
   comfy:
     env_file: .env
     build:
-      context: ./
+      context: .
       args:
         - HF_TOKEN=${HF_TOKEN}
         - PRESET=${PRESET}
-    image: quinninc/comfy:3.0.1-runpod-${PRESET}
+    image: quinninc/comfy:dev-runpod-${PRESET}
     container_name: comfy
     privileged: true
     runtime: nvidia
