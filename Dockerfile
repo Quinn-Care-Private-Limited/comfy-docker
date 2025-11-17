@@ -8,7 +8,9 @@ ENV DEBIAN_FRONTEND=noninteractive \
     ### Prefer binary wheels over source distributions for faster pip installations
     PIP_PREFER_BINARY=1 \
     ### Ensures output from python is printed immediately to the terminal without buffering
-    PYTHONUNBUFFERED=1 
+    PYTHONUNBUFFERED=1 \
+    ### Set CUDA visible devices
+    CUDA_VISIBLE_DEVICES=0
 
 ENV PORT=80
 ENV COMFY_PORT=8188
@@ -22,7 +24,7 @@ ENV DATA_PATH=/data
 ENV MODELS_PATH=/models
 
 ARG HF_TOKEN
-ARG PRESET=flux-krea
+ARG INCLUDE_MODELS=false
 
 RUN mkdir -p $FS_PATH$DATA_PATH
 RUN mkdir -p $FS_PATH$MODELS_PATH
@@ -30,7 +32,7 @@ RUN mkdir -p $FS_PATH$MODELS_PATH
 ### Install Python, git and other necessary tools
 RUN apt-get update && apt-get install -y \
     python3-pip \
-    python3.10 \
+    python3.11 \
     wget \
     git \
     ffmpeg \
@@ -62,12 +64,13 @@ RUN pip3 install torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 --index-url 
 RUN pip3 install -r requirements.txt 
 
 ### Add /custom folder - this includes the installer script and any manually added custom nodes/models
-ADD custom/${PRESET}.json ./
-ADD custom/custom-file-installer.py ./
+ADD custom/custom-nodes.json ./
+ADD custom/models.json ./
+ADD custom/file-installer.py ./
 ADD custom/extra_model_paths.yaml ./
 
 ### install each of the custom models/nodes etc within custom-files.json
-RUN python3 -u custom-file-installer.py 
+RUN python3 -u file-installer.py custom-nodes.json
 
 ### Check for custom nodes 'requirements.txt' files and then run install
 RUN for dir in /comfyui/custom_nodes/*/; do \
@@ -77,6 +80,9 @@ RUN for dir in /comfyui/custom_nodes/*/; do \
     done
 
 RUN pip3 install huggingface-hub onnxruntime diffusers sageattention triton peft
+
+### install each of the models etc within models.json
+RUN if [ "$INCLUDE_MODELS" = "true" ]; then python3 -u file-installer.py models.json; fi
 
 ### Go back to the root
 WORKDIR /app

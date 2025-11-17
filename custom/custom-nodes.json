@@ -42,30 +42,5 @@
   {
     "url": "https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git",
     "path": "/comfyui/custom_nodes/ComfyUI_UltimateSDUpscale"
-  },
-  {
-    "url": "https://huggingface.co/black-forest-labs/FLUX.1-Krea-dev/resolve/main/flux1-krea-dev.safetensors",
-    "path": "/comfyui/models/diffusion_models/flux1-krea-dev.safetensors"
-  },
-  {
-    "url": "https://huggingface.co/black-forest-labs/FLUX.1-Krea-dev/resolve/main/ae.safetensors",
-    "path": "/comfyui/models/vae/ae.safetensors"
-  },
-  {
-    "url": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors",
-    "path": "/comfyui/models/clip/t5xxl_fp8_e4m3fn_scaled.safetensors"
-  },
-  {
-    "url": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors",
-    "path": "/comfyui/models/clip/clip_l.safetensors"
-  },
-  {
-    "url": "https://huggingface.co/Phips/4xRealWebPhoto_v4_dat2/resolve/main/4xRealWebPhoto_v4_dat2.safetensors",
-    "path": "/comfyui/models/upscale_models/4xRealWebPhoto_v4.safetensors"
-  },
-  {
-    "url": "https://huggingface.co/halllooo/4x_UniversalUpscalerV2-Sharp_101000_G/resolve/main/4x_UniversalUpscalerV2-Sharp_101000_G.pth",
-    "path": "/comfyui/models/upscale_models/4x_UniversalUpscalerV2-Sharp.pth"
   }
-
 ]

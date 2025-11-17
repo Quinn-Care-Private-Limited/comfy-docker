@@ -10,12 +10,12 @@ def log(message):
     # print(message, file=sys.stderr, flush=True)
 
 
-PRESET = os.environ.get("PRESET")
-log(f"PRESET: {PRESET}")
+# Load JSON data from the file (get json_file_path from arg)
+if len(sys.argv) < 2:
+    log("Usage: python3 custom-file-installer.py <json_file_path>")
+    sys.exit(1)
 
-
-# Load JSON data from the file
-json_file_path = f"{PRESET}.json"  # Replace with the path to your JSON file
+json_file_path = sys.argv[1]
 
 log(f"Loading custom files from {json_file_path}...")
 with open(json_file_path, "r") as json_file:

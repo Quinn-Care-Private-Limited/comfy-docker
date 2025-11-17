@@ -188,11 +188,9 @@ def handler(job):
         utils.log("")
 
     try:
-        if "bucket" in job_input:
-            utils.upload_file_gcs_path(output_files, job_input["bucket"])
-        elif "upload" in job_input:
-            utils.upload_file_gcs(
-                output_files[0],
+        if "upload" in job_input:
+            output_files = utils.upload_files(
+                output_files,
                 job_input["upload"]["bucket"],
                 job_input["upload"]["key"],
             )

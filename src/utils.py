@@ -117,12 +117,12 @@ def upload_file_gcs_path(files, bucket_path):
     return True
 
 
-def upload_file_gcs(file, bucket, key):
+def upload_file(file, bucket, key):
     """
     Uploads a file to a Google Cloud Storage bucket.
 
     Args:
-    - file ({name: str, path: str}): The path to the file to upload.
+    - files ([{name: str, path: str}]): The path to the file to upload.
     - bucket (str): The name of the bucket to upload to.
     - key (str): The key to upload the file to.
     """
@@ -139,7 +139,29 @@ def upload_file_gcs(file, bucket, key):
     log(f"File {file_name} uploaded to {bucket} at {key}.")
     os.remove(file_path)
 
-    return True
+    # return the url of the uploaded file
+    return {
+        "name": file_name,
+        "path": file_path,
+        "url": blob.public_url,
+    }
+
+
+def upload_files(files, bucket, key):
+    """
+    Uploads a list of files to a Google Cloud Storage bucket.
+    """
+    uploaded_files = []
+    if len(files) == 1:
+        uploaded_files.append(upload_file(files[0], bucket, key))
+    else:
+        ## replace any extension from key
+        key = key.split(".")[0]
+        for index, file in enumerate(files):
+            file_name = file["name"]
+            file_name = file_name.replace("_00001_", "")
+            uploaded_files.append(upload_file(file, bucket, f"{key}/{file_name}"))
+    return uploaded_files
 
 
 class ProgressTracker:

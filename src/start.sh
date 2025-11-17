@@ -22,9 +22,13 @@ sed -i "s|^\([[:space:]]*base_path:\).*|\1 \"$FS_PATH$MODELS_PATH\"|" /comfyui/e
 
 echo "worker-comfy: Starting ComfyUI"
 python3 /comfyui/main.py --listen --port $COMFY_PORT --input-directory $FS_PATH$DATA_PATH --output-directory $FS_PATH$DATA_PATH --disable-auto-launch --disable-metadata &
+COMFY_PID=$!
 
 echo "worker-comfy: Starting Handler"
 python3 -u /app/main.py
+HANDLER_EXIT_CODE=$?
 
-# Exit immediately when one of the background processes terminate.
-wait -n
+# If handler exited (e.g., after local testing), kill ComfyUI and exit
+echo "worker-comfy: Handler exited with code $HANDLER_EXIT_CODE, cleaning up..."
+kill $COMFY_PID 2>/dev/null || true
+exit $HANDLER_EXIT_CODE
