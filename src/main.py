@@ -4,9 +4,7 @@ import handler
 port = int(os.environ.get("PORT", 3000))
 cloud_type = os.environ.get("CLOUD_TYPE")
 
-
 def run():
-    handler.setup_storage_credentials()
     if cloud_type == "GCP" or cloud_type == "AWS":
         import uuid
         import asyncio

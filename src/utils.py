@@ -87,80 +87,143 @@ def safe_parse(data):
         return {"error": "Invalid JSON", "raw_data": data}
 
 
-def upload_file_gcs_path(files, bucket_path):
+def setup_storage_credentials():
+    import base64
+
+    gcp_credentials = os.environ.get("GCP_CREDENTIALS")
+    aws_credentials = os.environ.get("AWS_CREDENTIALS")
+    gcp_credentials_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+    aws_config_file_path = os.environ.get("AWS_CONFIG_FILE")
+    aws_shared_credentials_file_path = os.environ.get("AWS_SHARED_CREDENTIALS_FILE")
+
+    # if gcp_credentials is set, set it in gcp credentials file
+    if gcp_credentials:
+        with open(gcp_credentials_path, "w") as f:
+            f.write(base64.b64decode(gcp_credentials).decode("utf-8"))
+    elif aws_credentials:
+        credentials = json.loads(base64.b64decode(aws_credentials).decode("utf-8"))
+
+        with open(aws_config_file_path, "w") as f:
+            content = f"""[default]
+            region = {credentials["region_name"]}
+            output = json"""
+            f.write(content)
+
+        with open(aws_shared_credentials_file_path, "w") as f:
+            content = f"""[default]
+            aws_access_key_id = {credentials["aws_access_key_id"]}
+            aws_secret_access_key = {credentials["aws_secret_access_key"]}"""
+            f.write(content)
+    else:
+        log("No storage credentials set")
+
+
+def upload_file(file, bucket, key, cloud_type="GCP", credentials=None):
     """
-    Uploads a file to a Google Cloud Storage bucket.
+    Uploads a file to a cloud storage bucket (GCP or AWS).
 
     Args:
-    - files ([{name: str, path: str}]): The path to the file to upload.
-    - bucket_name (str): The name of the bucket to upload to.
-    """
-
-    from google.cloud import storage
-
-    # get the bucket key from bucket name
-    bucket_name = bucket_path.split("/")[0]
-    bucket_key = "/".join(bucket_path.split("/")[1:])
-
-    storage_client = storage.Client()
-    bucket = storage_client.bucket(bucket_name)
-
-    for file in files:
-        file_name = file["name"]
-        file_path = file["path"]
-        bucket_path = f"{bucket_key}/{file_name}"
-        blob = bucket.blob(bucket_path)
-        blob.upload_from_filename(file_path)
-        log(f"File {file_name} uploaded to {bucket_name} at {bucket_path}.")
-        os.remove(file_path)
-
-    return True
-
-
-def upload_file(file, bucket, key):
-    """
-    Uploads a file to a Google Cloud Storage bucket.
-
-    Args:
-    - files ([{name: str, path: str}]): The path to the file to upload.
+    - file (dict): Dictionary with 'name' and 'path' keys for the file to upload.
     - bucket (str): The name of the bucket to upload to.
-    - key (str): The key to upload the file to.
+    - key (str): The key/path to upload the file to.
+    - cloud_type (str): Either "GCP" for Google Cloud Storage or "AWS" for S3.
+    - credentials (dict): Optional credentials for cloud provider.
     """
-
-    from google.cloud import storage
-
-    storage_client = storage.Client()
-    bucket = storage_client.bucket(bucket)
 
     file_name = file["name"]
     file_path = file["path"]
-    blob = bucket.blob(key)
-    blob.upload_from_filename(file_path)
-    log(f"File {file_name} uploaded to {bucket} at {key}.")
-    os.remove(file_path)
 
-    # return the url of the uploaded file
-    return {
-        "name": file_name,
-        "path": file_path,
-        "url": blob.public_url,
-    }
+    if cloud_type == "AWS":
+        import boto3
+
+        # Initialize S3 client
+        aws_url = credentials.get("aws_url") if credentials else None
+
+        if credentials:
+            # Check if custom endpoint URL is provided (for S3-compatible services)
+            if aws_url:
+                s3_client = boto3.client(
+                    "s3",
+                    aws_access_key_id=credentials.get("aws_access_key_id"),
+                    aws_secret_access_key=credentials.get("aws_secret_access_key"),
+                    endpoint_url=aws_url,
+                    region_name="auto",
+                )
+            else:
+                s3_client = boto3.client(
+                    "s3",
+                    aws_access_key_id=credentials.get("aws_access_key_id"),
+                    aws_secret_access_key=credentials.get("aws_secret_access_key"),
+                    region_name=credentials.get("region_name", "us-east-1"),
+                )
+        else:
+            # Use default credentials from environment/IAM role
+            s3_client = boto3.client("s3")
+
+        # Upload file to S3
+        s3_client.upload_file(file_path, bucket, key)
+        log(f"File {file_name} uploaded to S3 bucket {bucket} at {key}.")
+
+        # Generate the S3 URL
+        if aws_url:
+            # For custom endpoints, construct URL using the endpoint
+            url = f"{aws_url}/{bucket}/{key}"
+        else:
+            region = (
+                credentials.get("region_name", "us-east-1")
+                if credentials
+                else "us-east-1"
+            )
+            url = f"https://{bucket}.s3.{region}.amazonaws.com/{key}"
+
+        os.remove(file_path)
+
+        return {
+            "name": file_name,
+            "path": file_path,
+            "url": url,
+        }
+
+    else:  # Default to GCP
+        from google.cloud import storage
+
+        if credentials:
+            storage_client = storage.Client.from_service_account_json(credentials)
+        else:
+            storage_client = storage.Client()
+        bucket_obj = storage_client.bucket(bucket)
+
+        blob = bucket_obj.blob(key)
+        blob.upload_from_filename(file_path)
+        log(f"File {file_name} uploaded to GCS bucket {bucket} at {key}.")
+        os.remove(file_path)
+
+        # return the url of the uploaded file
+        return {
+            "name": file_name,
+            "path": file_path,
+            "url": blob.public_url,
+        }
 
 
-def upload_files(files, bucket, key):
+def upload_files(files, bucket, key, cloud_type, credentials=None):
     """
-    Uploads a list of files to a Google Cloud Storage bucket.
+    Uploads a list of files to a cloud storage bucket (GCP or AWS).
     """
     uploaded_files = []
     if len(files) == 1:
-        uploaded_files.append(upload_file(files[0], bucket, key))
+        uploaded_files.append(
+            upload_file(files[0], bucket, key, cloud_type, credentials)
+        )
     else:
         ## replace any extension from key
         key = key.split(".")[0]
         for index, file in enumerate(files):
             file_name = file["name"]
             file_name = file_name.replace("_00001_", "")
-            uploaded_files.append(upload_file(file, bucket, f"{key}/{file_name}"))
+            uploaded_files.append(
+                upload_file(file, bucket, f"{key}/{file_name}", cloud_type, credentials)
+            )
     return uploaded_files
 
 

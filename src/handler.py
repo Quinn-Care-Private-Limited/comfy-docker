@@ -21,20 +21,7 @@ utils.log(f"ENV: {env}")
 utils.log(f"CLOUD_TYPE: {cloud_type}")
 
 callback_data = {}
-
-
-def setup_storage_credentials():
-    gcp_credentials = os.environ.get("GCP_CREDENTIALS")
-    gcp_credentials_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
-
-    # if gcp_credentials is set, set it in gcp credentials file
-    if gcp_credentials:
-        with open(gcp_credentials_path, "w") as f:
-            import base64
-
-            f.write(base64.b64decode(gcp_credentials).decode("utf-8"))
-    else:
-        utils.log("No storage credentials set")
+utils.setup_storage_credentials()
 
 
 def get_status(run_id):
@@ -193,6 +180,8 @@ def handler(job):
                 output_files,
                 job_input["upload"]["bucket"],
                 job_input["upload"]["key"],
+                job_input["upload"]["cloud_type"],
+                job_input["upload"]["credentials"],
             )
     except Exception as e:
         utils.log(f"Error uploading files to GCS: {e}")
