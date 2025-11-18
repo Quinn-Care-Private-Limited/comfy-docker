@@ -6,10 +6,10 @@ services:
       args:
         - HF_TOKEN=${HF_TOKEN}
         - INCLUDE_MODELS=${INCLUDE_MODELS}
-    image: quinninc/comfy:1.0.0-runpod
+    image: quinninc/comfy:${VERSION}
     container_name: comfy
     privileged: true
     runtime: nvidia
     network_mode: "host"
     volumes:
-      - ./examples/flux-kontext-input.json:/app/test_input.json
+      - ./examples/${TEST_INPUT_FILE_NAME}:/app/test_input.json

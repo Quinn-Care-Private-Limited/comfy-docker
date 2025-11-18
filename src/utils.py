@@ -166,7 +166,6 @@ def upload_file(file, bucket, key, cloud_type="GCP", credentials=None):
 
         # Generate the S3 URL
         if aws_url:
-            # For custom endpoints, construct URL using the endpoint
             url = f"{aws_url}/{bucket}/{key}"
         else:
             region = (
