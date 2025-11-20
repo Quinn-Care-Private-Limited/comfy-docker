@@ -71,7 +71,10 @@ def handler(job):
             if env == "development":
                 utils.log(data)
             else:
-                runpod.serverless.progress_update({"id": data["run_id"]}, data)
+                if status == "processing":
+                    runpod.serverless.progress_update({"id": data["run_id"]}, {"progress": new_progress})
+                elif status == "completed":
+                    runpod.serverless.progress_update({"id": data["run_id"]}, {"progress": 100})
 
         if callback_url is None:
             return
@@ -132,7 +135,7 @@ def handler(job):
 
     # if 'run' had an error, then stop job and return error as result
     if outputs.get("error"):
-        return callback(
+        callback(
             {
                 "run_id": run_id,
                 "status": "failed",
@@ -140,6 +143,7 @@ def handler(job):
                 "metadata": metadata,
             },
         )
+        return {"error": outputs.get("error")}
 
     # Fetching generated images
     output_files = []  # array of output filepath/urls
@@ -185,7 +189,7 @@ def handler(job):
             )
     except Exception as e:
         utils.log(f"Error uploading files to GCP: {e}")
-        return callback(
+        callback(
             {
                 "run_id": run_id,
                 "status": "failed",
@@ -193,8 +197,8 @@ def handler(job):
                 "metadata": metadata,
             },
         )
-
-    return callback(
+        return {"error": "Error uploading files to GCP"}
+    callback(
         {
             "run_id": run_id,
             "status": "completed",
@@ -202,3 +206,4 @@ def handler(job):
             "metadata": metadata,
         },
     )
+    return output_files
