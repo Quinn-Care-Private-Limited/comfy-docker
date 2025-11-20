@@ -178,22 +178,22 @@ def handler(job):
         if "upload" in job_input:
             output_files = utils.upload_files(
                 output_files,
-                job_input["upload"]["bucket"],
-                job_input["upload"]["key"],
-                job_input["upload"]["cloud_type"],
-                job_input["upload"]["credentials"],
+                job_input["upload"].get("bucket"),
+                job_input["upload"].get("key"),
+                job_input["upload"].get("cloud_type"),
+                job_input["upload"].get("credentials"),
             )
     except Exception as e:
-        utils.log(f"Error uploading files to GCS: {e}")
+        utils.log(f"Error uploading files to GCP: {e}")
         callback(
             {
                 "run_id": run_id,
                 "status": "failed",
-                "data": {"error": "Error uploading files to GCS"},
+                "data": {"error": "Error uploading files to GCP"},
                 "metadata": metadata,
             },
         )
-        return {"error": "Error uploading files to GCS"}
+        return {"error": "Error uploading files to GCP"}
 
     callback(
         {
