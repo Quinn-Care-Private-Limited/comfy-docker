@@ -87,6 +87,7 @@ def handler(job):
             )
         except Exception as e:
             pass
+        return data
 
     # input workflow
     callback_data[run_id] = {
@@ -131,7 +132,7 @@ def handler(job):
 
     # if 'run' had an error, then stop job and return error as result
     if outputs.get("error"):
-        callback(
+        return callback(
             {
                 "run_id": run_id,
                 "status": "failed",
@@ -139,7 +140,6 @@ def handler(job):
                 "metadata": metadata,
             },
         )
-        return {"error": outputs.get("error")}
 
     # Fetching generated images
     output_files = []  # array of output filepath/urls
@@ -185,7 +185,7 @@ def handler(job):
             )
     except Exception as e:
         utils.log(f"Error uploading files to GCP: {e}")
-        callback(
+        return callback(
             {
                 "run_id": run_id,
                 "status": "failed",
@@ -193,9 +193,8 @@ def handler(job):
                 "metadata": metadata,
             },
         )
-        return {"error": "Error uploading files to GCP"}
 
-    callback(
+    return callback(
         {
             "run_id": run_id,
             "status": "completed",
@@ -203,4 +202,3 @@ def handler(job):
             "metadata": metadata,
         },
     )
-    return {"output": output_files}
