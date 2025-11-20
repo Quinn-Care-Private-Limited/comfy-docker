@@ -66,11 +66,10 @@ RUN pip3 install torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 --index-url 
 RUN pip3 install -r requirements.txt 
 
 ### Add /custom folder - this includes the installer script and any manually added custom nodes/models
-ADD custom/custom-nodes.json ./
-ADD custom/models.json ./
 ADD custom/file-installer.py ./
 ADD custom/extra_model_paths.yaml ./
 
+ADD custom/custom-nodes.json ./
 ### install each of the custom models/nodes etc within custom-files.json
 RUN python3 -u file-installer.py custom-nodes.json
 
@@ -83,6 +82,7 @@ RUN for dir in /comfyui/custom_nodes/*/; do \
 
 RUN pip3 install huggingface-hub onnxruntime diffusers sageattention triton peft
 
+ADD custom/models.json ./
 ### install each of the models etc within models.json
 RUN if [ "$INCLUDE_MODELS" = "true" ]; then python3 -u file-installer.py models.json; fi
 
