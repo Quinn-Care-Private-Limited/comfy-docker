@@ -86,6 +86,8 @@ ADD custom/models.json ./
 ### install each of the models etc within models.json
 RUN if [ "$INCLUDE_MODELS" = "true" ]; then python3 -u file-installer.py models.json; fi
 
+COPY custom/models /comfyui/models
+
 ### Go back to the root
 WORKDIR /app
 
