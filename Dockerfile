@@ -69,6 +69,11 @@ RUN pip3 install -r requirements.txt
 ADD custom/file-installer.py ./
 ADD custom/extra_model_paths.yaml ./
 
+ADD custom/models.json ./
+### install each of the models etc within models.json
+RUN if [ "$INCLUDE_MODELS" = "true" ]; then python3 -u file-installer.py models.json; fi
+COPY custom/models /comfyui/models
+
 ADD custom/custom-nodes.json ./
 ### install each of the custom models/nodes etc within custom-files.json
 RUN python3 -u file-installer.py custom-nodes.json
@@ -81,12 +86,6 @@ RUN for dir in /comfyui/custom_nodes/*/; do \
     done
 
 RUN pip3 install huggingface-hub onnxruntime diffusers sageattention triton peft
-
-ADD custom/models.json ./
-### install each of the models etc within models.json
-RUN if [ "$INCLUDE_MODELS" = "true" ]; then python3 -u file-installer.py models.json; fi
-
-COPY custom/models /comfyui/models
 
 ### Go back to the root
 WORKDIR /app

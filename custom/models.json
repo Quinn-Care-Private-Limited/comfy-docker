@@ -18,13 +18,5 @@
   {
     "url": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors",
     "path": "/comfyui/models/clip/clip_l.safetensors"
-  },
-  {
-    "url": "https://huggingface.co/Phips/4xRealWebPhoto_v4_dat2/resolve/95e9cd50553951c27d86bafbdc1bc27ca8e750d2/4xRealWebPhoto_v4.pth",
-    "path": "/comfyui/models/upscale_models/4xRealWebPhoto_v4.pth"
-  },
-  {
-    "url": "https://huggingface.co/halllooo/4x_UniversalUpscalerV2-Sharp_101000_G/resolve/main/4x_UniversalUpscalerV2-Sharp_101000_G.pth",
-    "path": "/comfyui/models/upscale_models/4x_UniversalUpscalerV2-Sharp.pth"
   }
 ]

@@ -27,12 +27,15 @@ log(f"Found {len(data)} custom file(s) to install.")
 for item in data:
     url = item.get("url")
     path = item.get("path")
+    hash = item.get("hash")
 
     if url and path:
         if url.endswith(".git"):
             try:  # Clone the Git repository into the specified path
                 log(f"Cloning {url} to {path}...")
                 subprocess.check_call(["git", "clone", url, path])
+                if hash:
+                    subprocess.check_call(["git", "checkout", hash], cwd=path)
                 log(f"✓ Successfully cloned Git repository from {url} to {path}")
             except subprocess.CalledProcessError as e:
                 log(f"✗ Error cloning Git repository from {url}: {e}")

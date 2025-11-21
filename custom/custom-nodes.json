@@ -1,46 +1,57 @@
 [
   {
     "url": "https://github.com/kijai/ComfyUI-KJNodes.git",
+    "hash": "fbdb08f9d6b0e821919d2c9f9caf8972ed439690",
     "path": "/comfyui/custom_nodes/ComfyUI-KJNodes"
   },
   {
     "url": "https://github.com/Acly/comfyui-inpaint-nodes.git",
+    "hash": "726e16ff2742be285b3da78b73333ba6227ad234",
     "path": "/comfyui/custom_nodes/comfyui-inpaint-nodes"
   },
   {
     "url": "https://github.com/WASasquatch/was-node-suite-comfyui.git",
+    "hash": "ea935d1044ae5a26efa54ebeb18fe9020af49a45",
     "path": "/comfyui/custom_nodes/was-node-suite-comfyui"
   },
   {
     "url": "https://github.com/cubiq/ComfyUI_essentials.git",
+    "hash": "9d9f4bedfc9f0321c19faf71855e228c93bd0dc9",
     "path": "/comfyui/custom_nodes/ComfyUI_essentials"
   },
   {
     "url": "https://github.com/Fannovel16/comfyui_controlnet_aux.git",
+    "hash": "59b027e088c1c8facf7258f6e392d16d204b4d27",
     "path": "/comfyui/custom_nodes/comfyui_controlnet_aux"
   },
   {
     "url": "https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes.git",
+    "hash": "d0905bed31249f2bd0814c67585cf4fe3c77c015",
     "path": "/comfyui/custom_nodes/Derfuu_ComfyUI_ModdedNodes"
   },
   {
     "url": "https://github.com/tsogzark/ComfyUI-load-image-from-url.git",
+    "hash": "66e4c91ffa13ea86be149c0f1a11ad6479bcf0cf",
     "path": "/comfyui/custom_nodes/ComfyUI-load-image-from-url"
   },
   {
     "url": "https://github.com/ltdrdata/ComfyUI-Impact-Pack.git",
+    "hash": "726e16ff2742be285b3da78b73333ba6227ad234",
     "path": "/comfyui/custom_nodes/ComfyUI-Impact-Pack"
   },
   {
     "url": "https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git",
+    "hash": "50c7b71a6a224734cc9b21963c6d1926816a97f1",
     "path": "/comfyui/custom_nodes/ComfyUI-Impact-Subpack"
   },
   {
     "url": "https://github.com/welltop-cn/ComfyUI-TeaCache.git",
+    "hash": "91dff8e31684ca70a5fda309611484402d8fa192",
     "path": "/comfyui/custom_nodes/ComfyUI-TeaCache"
   },
   {
     "url": "https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git",
+    "hash": "627c871f14532b164331f08d0eebfbf7404161ee",
     "path": "/comfyui/custom_nodes/ComfyUI_UltimateSDUpscale"
   }
 ]
