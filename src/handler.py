@@ -69,7 +69,7 @@ def handler(job):
             import runpod
 
             if env == "development":
-                utils.log(data)
+                utils.log({"progress": new_progress})
             else:
                 if status == "processing":
                     runpod.serverless.progress_update({"id": data["run_id"]}, {"progress": new_progress})
