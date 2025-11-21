@@ -73,8 +73,6 @@ def handler(job):
             else:
                 if status == "processing":
                     runpod.serverless.progress_update({"id": data["run_id"]}, {"progress": new_progress})
-                elif status == "completed":
-                    runpod.serverless.progress_update({"id": data["run_id"]}, {"progress": 100})
 
         if callback_url is None:
             return
