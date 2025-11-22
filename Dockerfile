@@ -56,7 +56,7 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui
 WORKDIR /comfyui
 
 ### set comfyui to specific commit id (useful if they update and introduce bugs...)
-RUN git checkout 5ebcab3c7d974963a89cecd37296a22fdb73bd2b
+RUN git checkout d8c51ba15aef6b0df86a7ea0203881be55d7579b
 
 RUN pip3 install --upgrade pip
 
@@ -85,7 +85,7 @@ RUN for dir in /comfyui/custom_nodes/*/; do \
     fi; \
     done
 
-RUN pip3 install huggingface-hub onnxruntime diffusers sageattention triton peft
+RUN pip3 install --no-cache-dir huggingface-hub onnxruntime diffusers sageattention triton peft
 
 ### Go back to the root
 WORKDIR /app
