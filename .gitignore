@@ -3,7 +3,9 @@ examples/*
 !examples/test_input.json
 volume/localmount/*
 custom/custom_nodes/*
-custom/models/*
+*.pt
+*.pth
+*.safetensors
 output/*
 .env
 __pycache__/

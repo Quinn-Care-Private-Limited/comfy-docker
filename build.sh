@@ -1,1 +1,1 @@
-docker build -t comfyui-worker .
+docker compose build
