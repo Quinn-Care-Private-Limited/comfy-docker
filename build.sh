@@ -1,1 +1,1 @@
-docker compose build
+docker build -t quinninc/comfy:latest .
