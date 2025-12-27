@@ -31,7 +31,7 @@ def run():
             return
 
         async def run_handler(run_id, data):
-            await asyncio.to_thread(handler.handler, {"id": run_id, "data": data})
+            await asyncio.to_thread(handler.handler, {"id": run_id, "input": data["input"]})
 
         async def handle_post(request):
             try:
