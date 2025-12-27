@@ -1,8 +1,11 @@
 import os
+import json
 import handler
 
 port = int(os.environ.get("PORT", 3000))
 cloud_type = os.environ.get("CLOUD_TYPE")
+env = os.environ.get("ENV", "production")
+
 
 def run():
     if cloud_type == "GCP" or cloud_type == "AWS":
@@ -11,6 +14,21 @@ def run():
         import gpustat
         import psutil
         from aiohttp import web
+
+        if env == "development":
+            test_json_path = "/app/test_input.json"
+            if os.path.exists(test_json_path):
+                with open(test_json_path, "r") as f:
+                    test_data = json.load(f)
+                run_id = str(uuid.uuid4())
+                job = {"id": run_id, "input": test_data["input"]}
+                print(f"Running test with JSON file: {test_json_path}")
+                handler.handler(job)
+                print(f"Test completed with successfully")
+            else:
+                print(f"Test JSON file not found: {test_json_path}")
+
+            return
 
         async def run_handler(run_id, data):
             await asyncio.to_thread(handler.handler, {"id": run_id, "data": data})

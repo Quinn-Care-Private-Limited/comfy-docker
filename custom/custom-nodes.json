@@ -1,12 +1,12 @@
 [
   {
     "url": "https://github.com/kijai/ComfyUI-KJNodes.git",
-    "hash": "fbdb08f9d6b0e821919d2c9f9caf8972ed439690",
+    "hash": "79f529a84a8c20fe5dcdfa984c6be7a94102c014",
     "path": "/comfyui/custom_nodes/ComfyUI-KJNodes"
   },
   {
     "url": "https://github.com/Acly/comfyui-inpaint-nodes.git",
-    "hash": "726e16ff2742be285b3da78b73333ba6227ad234",
+    "hash": "1e2543e5619b3f6e88b7727243c8b9c5791a7b4a",
     "path": "/comfyui/custom_nodes/comfyui-inpaint-nodes"
   },
   {
@@ -21,7 +21,7 @@
   },
   {
     "url": "https://github.com/Fannovel16/comfyui_controlnet_aux.git",
-    "hash": "59b027e088c1c8facf7258f6e392d16d204b4d27",
+    "hash": "136f125c89aed92ced1b6fbb491e13719b72fcc0",
     "path": "/comfyui/custom_nodes/comfyui_controlnet_aux"
   },
   {
@@ -36,7 +36,7 @@
   },
   {
     "url": "https://github.com/ltdrdata/ComfyUI-Impact-Pack.git",
-    "hash": "e22f68fb97115b24ddf35d3d8801cc99fdb8af8d",
+    "hash": "61bd8397a18e7e7668e6a24e95168967768c2bed",
     "path": "/comfyui/custom_nodes/ComfyUI-Impact-Pack"
   },
   {
@@ -45,13 +45,13 @@
     "path": "/comfyui/custom_nodes/ComfyUI-Impact-Subpack"
   },
   {
-    "url": "https://github.com/welltop-cn/ComfyUI-TeaCache.git",
-    "hash": "91dff8e31684ca70a5fda309611484402d8fa192",
-    "path": "/comfyui/custom_nodes/ComfyUI-TeaCache"
+    "url": "https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git",
+    "hash": "d6b575adb878c3d1c7a357f700b5c1001ccb8bd9",
+    "path": "/comfyui/custom_nodes/ComfyUI_UltimateSDUpscale"
   },
   {
-    "url": "https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git",
-    "hash": "627c871f14532b164331f08d0eebfbf7404161ee",
-    "path": "/comfyui/custom_nodes/ComfyUI_UltimateSDUpscale"
+    "url": "https://github.com/city96/ComfyUI-GGUF.git",
+    "hash": "795e45156ece99afbc3efef911e63fcb46e6a20d",
+    "path": "/comfyui/custom_nodes/ComfyUI-GGUF"
   }
 ]

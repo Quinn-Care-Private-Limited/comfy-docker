@@ -55,8 +55,8 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui
 ### Change working directory to ComfyUI
 WORKDIR /comfyui
 
-### set comfyui to specific commit id (useful if they update and introduce bugs...)
-RUN git checkout d8c51ba15aef6b0df86a7ea0203881be55d7579b
+### Fetch tags and set comfyui to specific commit id (useful if they update and introduce bugs...)
+RUN git fetch --tags && git checkout tags/v0.5.1
 
 RUN pip3 install --upgrade pip
 
