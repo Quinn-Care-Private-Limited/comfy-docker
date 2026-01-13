@@ -1,14 +1,18 @@
 [ 
   {
-    "url": "https://huggingface.co/city96/FLUX.2-dev-gguf/resolve/main/flux2-dev-Q5_0.gguf",
-    "path": "/comfyui/models/diffusion_models/flux2-dev-Q5_0.gguf"
+    "url": "https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors",
+    "path": "/comfyui/models/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors"
   },
   {
-    "url": "https://huggingface.co/Comfy-Org/flux2-dev/resolve/main/split_files/vae/flux2-vae.safetensors",
-    "path": "/comfyui/models/vae/flux2-vae.safetensors"
+    "url": "https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors",
+    "path": "/comfyui/models/vae/ae.safetensors"
   },
   {
-    "url": "https://huggingface.co/unsloth/Mistral-Small-3.2-24B-Instruct-2506-GGUF/resolve/main/Mistral-Small-3.2-24B-Instruct-2506-UD-IQ1_S.gguf",
-    "path": "/comfyui/models/clip/Mistral-Small-3.2-24B-Instruct-2506-UD-IQ1_S.gguf"
+    "url": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors",
+    "path": "/comfyui/models/clip/t5xxl_fp8_e4m3fn_scaled.safetensors"
+  },
+  {
+    "url": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors",
+    "path": "/comfyui/models/clip/clip_l.safetensors"
   }
 ]
