@@ -1,6 +1,6 @@
 [ 
   {
-    "url": "https://huggingface.co/city96/FLUX.2-dev-gguf/resolve/main/flux2-dev-Q5_0.gguf?download=true",
+    "url": "https://huggingface.co/city96/FLUX.2-dev-gguf/resolve/main/flux2-dev-Q5_0.gguf",
     "path": "/comfyui/models/diffusion_models/flux2-dev-Q5_0.gguf"
   },
   {
@@ -8,7 +8,7 @@
     "path": "/comfyui/models/vae/flux2-vae.safetensors"
   },
   {
-    "url": "https://huggingface.co/unsloth/Mistral-Small-3.2-24B-Instruct-2506-GGUF/resolve/main/Mistral-Small-3.2-24B-Instruct-2506-Q2_K.gguf?download=true",
-    "path": "/comfyui/models/clip/Mistral-Small-3.2-24B-Instruct-2506-Q2_K.gguf"
+    "url": "https://huggingface.co/unsloth/Mistral-Small-3.2-24B-Instruct-2506-GGUF/resolve/main/Mistral-Small-3.2-24B-Instruct-2506-UD-IQ1_S.gguf",
+    "path": "/comfyui/models/clip/Mistral-Small-3.2-24B-Instruct-2506-UD-IQ1_S.gguf"
   }
 ]
