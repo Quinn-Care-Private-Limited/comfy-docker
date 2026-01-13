@@ -1,0 +1,20 @@
+services:
+  comfy:
+    env_file: .env
+    build:
+      context: .
+      args:
+        - HF_TOKEN=${HF_TOKEN}
+        - INCLUDE_MODELS=false
+    environment:
+      - CLOUD_TYPE=GCP
+      - FS_SHARE=10.90.36.34:/share1
+      - DATA_PATH=/comfyui/data
+      - MODELS_PATH=/comfyui/models
+    image: quinninc/comfy:${VERSION}-gcp
+    container_name: comfy
+    privileged: true
+    runtime: nvidia
+    network_mode: "host"
+    volumes:
+      - ./examples/${TEST_INPUT_FILE_NAME}:/app/test_input.json
