@@ -1,7 +1,7 @@
 [ 
   {
-    "url": "https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors",
-    "path": "/comfyui/models/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors"
+    "url": "https://huggingface.co/Comfy-Org/FLUX.1-Krea-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-krea-dev_fp8_scaled.safetensors",
+    "path": "/comfyui/models/diffusion_models/flux1-krea-dev_fp8_scaled.safetensors"
   },
   {
     "url": "https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors",
