@@ -1,0 +1,598 @@
+{
+ "input": {
+  "workflow": {
+  "1": {
+    "inputs": {
+      "url_or_path": "https://coral-assets.quinn.live/orgs/cmhu8a83o00akqp012mygc2pf/assets/GARMENT_IMAGE/cmhvtaj8u006h01n5hg1i6y9q/image.jpeg?v=1"
+    },
+    "class_type": "LoadImageFromUrlOrPath",
+    "_meta": {
+      "title": "Load Reference Image"
+    }
+  },
+  "2": {
+    "inputs": {
+      "upscale_method": "lanczos",
+      "megapixels": 2,
+      "image": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "ImageScaleToTotalPixels",
+    "_meta": {
+      "title": "Input MP"
+    }
+  },
+  "11": {
+    "inputs": {
+      "url_or_path": "https://coral-assets.quinn.live/orgs/org_2uRK5d5oMuss5hEdrotp22wqsTJ/assets/GENERATED_IMAGE/cmiwsim4300kzo501e9xauklu/image.jpeg"
+    },
+    "class_type": "LoadImageFromUrlOrPath",
+    "_meta": {
+      "title": "Load Input Image"
+    }
+  },
+  "15": {
+    "inputs": {
+      "vae_name": "flux2-vae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "19": {
+    "inputs": {
+      "noise_mask": true,
+      "positive": [
+        "208",
+        0
+      ],
+      "negative": [
+        "25",
+        0
+      ],
+      "vae": [
+        "15",
+        0
+      ],
+      "pixels": [
+        "28",
+        0
+      ],
+      "mask": [
+        "85",
+        0
+      ]
+    },
+    "class_type": "InpaintModelConditioning",
+    "_meta": {
+      "title": "InpaintModelConditioning"
+    }
+  },
+  "21": {
+    "inputs": {
+      "pixels": [
+        "2",
+        0
+      ],
+      "vae": [
+        "15",
+        0
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE Encode"
+    }
+  },
+  "22": {
+    "inputs": {
+      "guidance": 4,
+      "conditioning": [
+        "24",
+        0
+      ]
+    },
+    "class_type": "FluxGuidance",
+    "_meta": {
+      "title": "FluxGuidance"
+    }
+  },
+  "23": {
+    "inputs": {
+      "conditioning": [
+        "22",
+        0
+      ],
+      "latent": [
+        "21",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "ReferenceLatent 1"
+    }
+  },
+  "201": {
+    "inputs": {
+      "url_or_path": "https://coral-assets.quinn.live/orgs/cmhu8a83o00akqp012mygc2pf/assets/GARMENT_IMAGE/cmhvtaj8u006h01n5hg1i6y9q/image.jpeg?v=1"
+    },
+    "class_type": "LoadImageFromUrlOrPath",
+    "_meta": {
+      "title": "Load Reference Image 2"
+    }
+  },
+  "202": {
+    "inputs": {
+      "upscale_method": "lanczos",
+      "megapixels": 2,
+      "image": [
+        "201",
+        0
+      ]
+    },
+    "class_type": "ImageScaleToTotalPixels",
+    "_meta": {
+      "title": "Input MP 2"
+    }
+  },
+  "203": {
+    "inputs": {
+      "pixels": [
+        "202",
+        0
+      ],
+      "vae": [
+        "15",
+        0
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE Encode 2"
+    }
+  },
+  "204": {
+    "inputs": {
+      "conditioning": [
+        "23",
+        0
+      ],
+      "latent": [
+        "203",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "ReferenceLatent 2"
+    }
+  },
+  "205": {
+    "inputs": {
+      "url_or_path": "https://coral-assets.quinn.live/orgs/cmhu8a83o00akqp012mygc2pf/assets/GARMENT_IMAGE/cmhvtaj8u006h01n5hg1i6y9q/image.jpeg?v=1"
+    },
+    "class_type": "LoadImageFromUrlOrPath",
+    "_meta": {
+      "title": "Load Reference Image 3"
+    }
+  },
+  "206": {
+    "inputs": {
+      "upscale_method": "lanczos",
+      "megapixels": 2,
+      "image": [
+        "205",
+        0
+      ]
+    },
+    "class_type": "ImageScaleToTotalPixels",
+    "_meta": {
+      "title": "Input MP 3"
+    }
+  },
+  "207": {
+    "inputs": {
+      "pixels": [
+        "206",
+        0
+      ],
+      "vae": [
+        "15",
+        0
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE Encode 3"
+    }
+  },
+  "208": {
+    "inputs": {
+      "conditioning": [
+        "204",
+        0
+      ],
+      "latent": [
+        "207",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "ReferenceLatent 3"
+    }
+  },
+  "24": {
+    "inputs": {
+      "text": "sharpen the pattern of the garment exactly while Keeping the color same",
+      "clip": [
+        "182",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Positive Prompt)"
+    }
+  },
+  "25": {
+    "inputs": {
+      "conditioning": [
+        "24",
+        0
+      ]
+    },
+    "class_type": "ConditioningZeroOut",
+    "_meta": {
+      "title": "ConditioningZeroOut"
+    }
+  },
+  "28": {
+    "inputs": {
+      "upscale_method": "lanczos",
+      "megapixels": 4,
+      "image": [
+        "82",
+        0
+      ]
+    },
+    "class_type": "ImageScaleToTotalPixels",
+    "_meta": {
+      "title": "Output MP"
+    }
+  },
+  "44": {
+    "inputs": {
+      "samples": [
+        "179",
+        0
+      ],
+      "vae": [
+        "15",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "82": {
+    "inputs": {
+      "padding_left": 10,
+      "padding_right": 10,
+      "padding_top": 10,
+      "padding_bottom": 10,
+      "return_list": false,
+      "image": [
+        "11",
+        0
+      ],
+      "mask": [
+        "122",
+        0
+      ]
+    },
+    "class_type": "Bounded Image Crop with Mask",
+    "_meta": {
+      "title": "Bounded Image Crop with Mask"
+    }
+  },
+  "83": {
+    "inputs": {
+      "image": [
+        "84",
+        0
+      ],
+      "image_bounds": [
+        "82",
+        1
+      ]
+    },
+    "class_type": "Bounded Image Crop",
+    "_meta": {
+      "title": "Bounded Image Crop"
+    }
+  },
+  "84": {
+    "inputs": {
+      "mask": [
+        "122",
+        0
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "85": {
+    "inputs": {
+      "channel": "red",
+      "image": [
+        "83",
+        0
+      ]
+    },
+    "class_type": "ImageToMask",
+    "_meta": {
+      "title": "Convert Image to Mask"
+    }
+  },
+  "117": {
+    "inputs": {
+      "blend_factor": 1,
+      "feathering": 4,
+      "target": [
+        "11",
+        0
+      ],
+      "target_mask": [
+        "122",
+        0
+      ],
+      "target_bounds": [
+        "82",
+        1
+      ],
+      "source": [
+        "181",
+        0
+      ]
+    },
+    "class_type": "Bounded Image Blend with Mask",
+    "_meta": {
+      "title": "Bounded Image Blend with Mask"
+    }
+  },
+  "120": {
+    "inputs": {
+      "url_or_path": "https://coral-assets.quinn.live/tmp/cmjmkqpu401p901o5e3s84k0h_mask.jpeg"
+    },
+    "class_type": "LoadImageFromUrlOrPath",
+    "_meta": {
+      "title": "Load Input Image Mask"
+    }
+  },
+  "122": {
+    "inputs": {
+      "channel": "red",
+      "image": [
+        "120",
+        0
+      ]
+    },
+    "class_type": "ImageToMask",
+    "_meta": {
+      "title": "Convert Image to Mask"
+    }
+  },
+  "143": {
+    "inputs": {
+      "direction": "right",
+      "match_image_size": true,
+      "image1": [
+        "2",
+        0
+      ],
+      "image2": [
+        "82",
+        0
+      ]
+    },
+    "class_type": "ImageConcanate",
+    "_meta": {
+      "title": "Image Concatenate"
+    }
+  },
+  "144": {
+    "inputs": {
+      "direction": "right",
+      "match_image_size": true,
+      "image1": [
+        "143",
+        0
+      ],
+      "image2": [
+        "181",
+        0
+      ]
+    },
+    "class_type": "ImageConcanate",
+    "_meta": {
+      "title": "Image Concatenate"
+    }
+  },
+  "147": {
+    "inputs": {
+      "upscale_method": "lanczos",
+      "megapixels": 4,
+      "image": [
+        "144",
+        0
+      ]
+    },
+    "class_type": "ImageScaleToTotalPixels",
+    "_meta": {
+      "title": "Input MP"
+    }
+  },
+  "166": {
+    "inputs": {
+      "method": "hm-mvgd-hm",
+      "strength": 1,
+      "multithread": true,
+      "image_ref": [
+        "82",
+        0
+      ],
+      "image_target": [
+        "44",
+        0
+      ]
+    },
+    "class_type": "ColorMatch",
+    "_meta": {
+      "title": "Color Match"
+    }
+  },
+  "175": {
+    "inputs": {
+      "noise_seed": 147374451708258
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise"
+    }
+  },
+  "176": {
+    "inputs": {
+      "model": [
+        "183",
+        0
+      ],
+      "conditioning": [
+        "208",
+        0
+      ]
+    },
+    "class_type": "BasicGuider",
+    "_meta": {
+      "title": "BasicGuider"
+    }
+  },
+  "177": {
+    "inputs": {
+      "sampler_name": "euler"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect"
+    }
+  },
+  "179": {
+    "inputs": {
+      "noise": [
+        "175",
+        0
+      ],
+      "guider": [
+        "176",
+        0
+      ],
+      "sampler": [
+        "177",
+        0
+      ],
+      "sigmas": [
+        "180",
+        0
+      ],
+      "latent_image": [
+        "19",
+        2
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "SamplerCustomAdvanced"
+    }
+  },
+  "180": {
+    "inputs": {
+      "scheduler": "normal",
+      "steps": 20,
+      "denoise": 0.7,
+      "model": [
+        "183",
+        0
+      ]
+    },
+    "class_type": "BasicScheduler",
+    "_meta": {
+      "title": "BasicScheduler"
+    }
+  },
+  "181": {
+    "inputs": {
+      "sharpen_radius": 1,
+      "sigma": 1,
+      "alpha": 1,
+      "image": [
+        "166",
+        0
+      ]
+    },
+    "class_type": "ImageSharpen",
+    "_meta": {
+      "title": "ImageSharpen"
+    }
+  },
+  "182": {
+    "inputs": {
+      "clip_name": "Mistral-Small-3.2-24B-Instruct-2506-UD-IQ1_S.gguf",
+      "type": "flux2"
+    },
+    "class_type": "CLIPLoaderGGUF",
+    "_meta": {
+      "title": "CLIPLoader (GGUF)"
+    }
+  },
+  "183": {
+    "inputs": {
+      "unet_name": "flux2-dev-Q5_0.gguf"
+    },
+    "class_type": "UnetLoaderGGUF",
+    "_meta": {
+      "title": "Unet Loader (GGUF)"
+    }
+  },
+  "200": {
+    "inputs": {
+      "filename_prefix": "flux2-subject-enhancer",
+      "images": [
+        "117",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  }
+  },
+  "metadata": {
+    "hello": "world"
+  },
+  "upload": {
+     "bucket": "coral-assets",
+      "key": "tmp/flux2-input.png",
+      "cloud_type": "AWS"
+  }
+ }
+}
+

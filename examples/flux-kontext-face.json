@@ -1,0 +1,169 @@
+{
+  "input": {
+    "workflow": {
+      "4iC0F": {
+        "_meta": { "title": "BBox Detector" },
+        "class_type": "UltralyticsDetectorProvider",
+        "inputs": { "model_name": "bbox/face_yolov8m.pt" }
+      },
+      "5dnaI": {
+        "_meta": { "title": "Image Scale" },
+        "class_type": "ImageScaleToTotalPixels",
+        "inputs": {
+          "image": ["lCy2R", 0],
+          "megapixels": 2,
+          "upscale_method": "lanczos"
+        }
+      },
+      "6Zak9": {
+        "_meta": { "title": "Flux Guidance" },
+        "class_type": "FluxGuidance",
+        "inputs": { "conditioning": ["DbqA1", 0], "guidance": 1 }
+      },
+      "7ctDR": {
+        "_meta": { "title": "Dual CLIP Loader" },
+        "class_type": "DualCLIPLoader",
+        "inputs": {
+          "clip_name1": "clip_l.safetensors",
+          "clip_name2": "t5xxl_fp8_e4m3fn_scaled.safetensors",
+          "device": "default",
+          "type": "flux"
+        }
+      },
+      "9yczT": {
+        "_meta": { "title": "Load Face Image From Url" },
+        "class_type": "LoadImageFromUrlOrPath",
+        "inputs": {
+          "url_or_path": "https://coral-assets.quinn.live/orgs/org_2uRK5d5oMuss5hEdrotp22wqsTJ/assets/ACTOR/cmgeviw8v00gj01t718hm3c7h/actor-front.jpeg"
+        }
+      },
+      "AlYvz": {
+        "_meta": { "title": "Load Pose Image From Url" },
+        "class_type": "LoadImageFromUrlOrPath",
+        "inputs": {
+          "url_or_path": "https://coral-assets.quinn.live/orgs/org_2uRK5d5oMuss5hEdrotp22wqsTJ/assets/GENERATED_IMAGE/cmi967uek0006s92jbtkvqsr0/image.jpeg"
+        }
+      },
+      "DbqA1": {
+        "_meta": { "title": "CLIP Text Encode Prompt" },
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "clip": ["7ctDR", 0],
+          "text": "A adult with natural face and clear skin."
+        }
+      },
+      "KDcGe": {
+        "_meta": { "title": "Face Detailer" },
+        "class_type": "FaceDetailer",
+        "inputs": {
+          "bbox_crop_factor": 1.5,
+          "bbox_detector": ["4iC0F", 0],
+          "bbox_dilation": 10,
+          "bbox_threshold": 0.5,
+          "cfg": 1,
+          "clip": ["7ctDR", 0],
+          "cycle": 1,
+          "denoise": 0.45,
+          "drop_size": 10,
+          "feather": 5,
+          "force_inpaint": false,
+          "guide_size": 512,
+          "guide_size_for": false,
+          "image": ["AlYvz", 0],
+          "inpaint_model": true,
+          "max_size": 1024,
+          "model": ["LTHs2", 0],
+          "negative": ["r475J", 0],
+          "noise_mask": true,
+          "noise_mask_feather": 20,
+          "positive": ["PbnDD", 0],
+          "sam_bbox_expansion": 0,
+          "sam_detection_hint": "none",
+          "sam_dilation": 0,
+          "sam_mask_hint_threshold": 0.7,
+          "sam_mask_hint_use_negative": "False",
+          "sam_threshold": 0.93,
+          "sampler_name": "deis",
+          "scheduler": "beta",
+          "seed": 1763748915552,
+          "steps": 30,
+          "tiled_decode": false,
+          "tiled_encode": false,
+          "vae": ["nNdZt", 0],
+          "wildcard": ""
+        }
+      },
+      "LTHs2": {
+        "_meta": { "title": "TeaCache" },
+        "class_type": "TeaCache",
+        "inputs": {
+          "cache_device": "cuda",
+          "end_percent": 1,
+          "model": ["TZe96", 0],
+          "model_type": "flux-kontext",
+          "rel_l1_thresh": 0.4,
+          "start_percent": 0
+        }
+      },
+      "PbnDD": {
+        "_meta": { "title": "Reference Latent" },
+        "class_type": "ReferenceLatent",
+        "inputs": { "conditioning": ["6Zak9", 0], "latent": ["YinXG", 0] }
+      },
+      "TZe96": {
+        "_meta": { "title": "Load Diffusion Model" },
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "flux1-kontext-dev.safetensors",
+          "weight_dtype": "default"
+        }
+      },
+      "YinXG": {
+        "_meta": { "title": "VAE Encode" },
+        "class_type": "VAEEncode",
+        "inputs": { "pixels": ["5dnaI", 0], "vae": ["nNdZt", 0] }
+      },
+      "jSlXh": {
+        "_meta": { "title": "Save Image Upscaled" },
+        "class_type": "SaveImage",
+        "inputs": {
+          "filename_prefix": "cmi96hw5u000ps92jjlc9tuef-enhance-face-cmi96kae90013s92jaq67njhi",
+          "images": ["KDcGe", 0]
+        }
+      },
+      "lCy2R": {
+        "_meta": { "title": "Image Concat Multi" },
+        "class_type": "ImageConcatMulti",
+        "inputs": {
+          "direction": "right",
+          "image_1": ["9yczT", 0],
+          "image_2": ["tpNSs", 0],
+          "inputcount": 2,
+          "match_image_size": true
+        }
+      },
+      "nNdZt": {
+        "_meta": { "title": "VAE Loader" },
+        "class_type": "VAELoader",
+        "inputs": { "vae_name": "ae.safetensors" }
+      },
+      "r475J": {
+        "_meta": { "title": "Conditioning Zero Out" },
+        "class_type": "ConditioningZeroOut",
+        "inputs": { "conditioning": ["DbqA1", 0] }
+      },
+      "tpNSs": {
+        "_meta": { "title": "Load Face Image From Url" },
+        "class_type": "LoadImageFromUrlOrPath",
+        "inputs": {
+          "url_or_path": "https://coral-assets.quinn.live/orgs/org_2uRK5d5oMuss5hEdrotp22wqsTJ/assets/ACTOR/cmgeviw8v00gj01t718hm3c7h/actor-front-right.jpeg"
+        }
+      }
+    },
+    "upload": {
+        "bucket": "coral-assets",
+        "key": "tmp/cmi8yoekp000b2js92org29ug.jpg",
+        "cloud_type": "AWS"
+    }
+  }
+}

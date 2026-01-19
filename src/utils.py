@@ -133,40 +133,47 @@ def upload_file(file, bucket, key, cloud_type="GCP", credentials=None):
 
     file_name = file["name"]
     file_path = file["path"]
-    
+
+    if credentials is None and os.getenv("UPLOAD_CREDENTIALS"):
+        credentials = json.loads(
+            base64.b64decode(os.getenv("UPLOAD_CREDENTIALS")).decode("utf-8")
+        )
+
     # Convert PNG to JPEG if necessary
-    if file_name.endswith('.png') and not key.endswith('.png'):
+    if file_name.endswith(".png") and not key.endswith(".png"):
         from PIL import Image
-        
+
         log(f"Converting PNG to JPEG: {file_name}")
-        
+
         # Open the PNG image
         img = Image.open(file_path)
-        
+
         # Convert RGBA to RGB if necessary (JPEG doesn't support transparency)
-        if img.mode in ('RGBA', 'LA', 'P'):
+        if img.mode in ("RGBA", "LA", "P"):
             # Create a white background
-            background = Image.new('RGB', img.size, (255, 255, 255))
-            if img.mode == 'P':
-                img = img.convert('RGBA')
-            background.paste(img, mask=img.split()[-1] if img.mode in ('RGBA', 'LA') else None)
+            background = Image.new("RGB", img.size, (255, 255, 255))
+            if img.mode == "P":
+                img = img.convert("RGBA")
+            background.paste(
+                img, mask=img.split()[-1] if img.mode in ("RGBA", "LA") else None
+            )
             img = background
-        elif img.mode != 'RGB':
-            img = img.convert('RGB')
-        
+        elif img.mode != "RGB":
+            img = img.convert("RGB")
+
         # Create new file path with .jpg extension
-        jpeg_path = file_path.rsplit('.', 1)[0] + '.jpg'
-        
+        jpeg_path = file_path.rsplit(".", 1)[0] + ".jpg"
+
         # Save as JPEG with high quality
-        img.save(jpeg_path, 'JPEG', quality=95)
-        
+        img.save(jpeg_path, "JPEG", quality=95)
+
         # Remove the original PNG file
         os.remove(file_path)
-        
+
         # Update file path and name
         file_path = jpeg_path
-        file_name = file_name.rsplit('.', 1)[0] + '.jpg'
-        
+        file_name = file_name.rsplit(".", 1)[0] + ".jpg"
+
         log(f"Converted to JPEG: {file_name}")
 
     if cloud_type == "AWS":
@@ -175,7 +182,7 @@ def upload_file(file, bucket, key, cloud_type="GCP", credentials=None):
         # Initialize S3 client
         aws_url = credentials.get("aws_url") if credentials else None
         aws_public_url = credentials.get("aws_public_url") if credentials else None
-        
+
         if credentials:
             # Check if custom endpoint URL is provided (for S3-compatible services)
             if aws_url:

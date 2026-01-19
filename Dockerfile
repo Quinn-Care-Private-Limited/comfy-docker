@@ -26,7 +26,7 @@ ENV DATA_PATH=/data
 ENV MODELS_PATH=/models
 
 ARG HF_TOKEN
-ARG INCLUDE_MODELS=false
+ARG MODEL_FILE_NAME
 
 RUN mkdir -p $FS_PATH$DATA_PATH
 RUN mkdir -p $FS_PATH$MODELS_PATH
@@ -69,10 +69,9 @@ RUN pip3 install -r requirements.txt
 ADD custom/file-installer.py ./
 ADD custom/extra_model_paths.yaml ./
 
-ADD custom/models.json ./
+ADD custom/model_files /comfyui/model_files
 ### install each of the models etc within models.json
-RUN if [ "$INCLUDE_MODELS" = "true" ]; then python3 -u file-installer.py models.json; fi
-COPY custom/models /comfyui/models
+RUN if [ -n "$MODEL_FILE_NAME" ]; then python3 -u file-installer.py /comfyui/model_files/$MODEL_FILE_NAME; fi
 
 ADD custom/custom-nodes.json ./
 ### install each of the custom models/nodes etc within custom-files.json

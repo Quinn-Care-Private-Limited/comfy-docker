@@ -5,7 +5,7 @@ services:
       context: .
       args:
         - HF_TOKEN=${HF_TOKEN}
-        - INCLUDE_MODELS=${INCLUDE_MODELS}
+        - MODEL_FILE_NAME=${MODEL_FILE_NAME}
     image: quinninc/comfy:${VERSION}
     container_name: comfy
     privileged: true
