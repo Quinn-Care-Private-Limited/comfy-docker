@@ -143,6 +143,8 @@ def upload_file(file, bucket, key, cloud_type="GCP", credentials=None):
     if file_name.endswith(".png") and not key.endswith(".png"):
         from PIL import Image
 
+        Image.MAX_IMAGE_PIXELS = 300000000
+
         log(f"Converting PNG to JPEG: {file_name}")
 
         # Open the PNG image
