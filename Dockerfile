@@ -86,6 +86,8 @@ RUN for dir in /comfyui/custom_nodes/*/; do \
 
 RUN pip3 install --no-cache-dir huggingface-hub onnxruntime diffusers sageattention triton peft
 
+ADD custom/models /comfyui/models
+
 ### Go back to the root
 WORKDIR /app
 
