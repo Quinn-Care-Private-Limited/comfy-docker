@@ -103,5 +103,5 @@ RUN pip3 cache purge
 ADD src/ ./
 RUN chmod +x start.sh
 
-ENTRYPOINT ["/usr/bin/tini", "--"]
+ENTRYPOINT ["/usr/bin/tini", "-s", "--"]
 CMD ["/app/start.sh"]
